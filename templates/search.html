@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search</title>
+  <style>
+    /* Global styles */
+    body {
+      font-family: sans-serif; /* Set font to sans-serif */
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      background-color: #f4f4f4; /* Background color */
+      text-align: left; /* Center align text */
+    }
+
+    /* Header section with logo and text */
+    .header {
+      display: flex;
+      align-items: center; /* Aligns vertically */
+      justify-content: center; /* Aligns horizontally */
+      padding: 10px 20px; /* Optional padding */
+      position: relative;
+      z-index: 2; /* Ensure header stays above other content */
+      
+      height: 20%; /* Set height of the header */
+      min-height: 100px; /* Set a minimum height for the header */
+      max-height: 150px; /* Set a maximum height for the header */
+      background-color: #001f3f; /* Dark blue background color */
+      border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
+      animation: slideDown 2s forwards; /* Animation for sliding down the header */
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center; /* Aligns logo and text vertically */
+      margin-left: 20px;
+    }
+
+    .logo {
+      width: 80px; /* Adjust the width to make the logo smaller */
+      height: auto;
+      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      background-size: cover;
+      background-position: center;
+      cursor: pointer; /* Make the logo clickable */
+    }
+
+    .logo img {
+      width: 100%; /* Make the image fill the container */
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    .logo-text {
+      font-size: 14px;
+      color: #fff; /* White text color */
+      line-height: 1.5;
+      margin-left: 20px;
+      cursor: pointer; /* Make the text clickable */
+      text-decoration: none; /* Remove underline */
+      transition: color 0.3s ease; /* Add transition effect for color change */
+    }
+
+    .logo-text:hover {
+      color: #ccc; /* Change text color on hover */
+    }
+
+    /* Rest of your styles remain the same: */
+    h1.title {
+      margin: 20px 0; /* Adjust top margin */
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      animation: slideFromRight 1.5s forwards; /* Animation for sliding from right */
+    }
+
+    @keyframes slideFromRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .button-container {
+      text-align: center;
+      animation: slideFromLeft 1.5s forwards; /* Animation for sliding from left */
+    }
+
+    @keyframes slideFromLeft {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .container {
+      position: relative;
+      height: 80%; /* Set height of the container to occupy the remaining viewport height */
+      min-height: 600px; /* Set a minimum height for the container */
+      max-height: 1000px; /* Set a maximum height for the container */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background-color: #ffffcc; /* Lighter yellow background color */
+      border-radius: 20px;
+      padding: 40px; /* Increase padding */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
+      animation: slideIn 2s forwards; /* Animation for sliding in the card */
+      width: 65%; /* Set card width */
+      max-width: 700px; /* Set maximum card width */
+      margin-top: 5%;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Apply the same styling to form elements */
+    form {
+      margin-top: 30px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    p{
+      font-size: xx-small;
+    }
+
+    /* Footer */
+    .footer {
+      position: relative;
+      background-color: #001f3f; /* Same color as header */
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      border-radius: 20px 20px 0 0; /* Only top edges rounded */
+      margin-top: 5%; /* Add space between card and footer */
+    }
+  </style>
+   <script>
+    function validateForm() {
+      var mobile = document.getElementById('phone').value;
+      var email = document.getElementById('email').value;
+
+      // Phone number validation
+      var phonePattern = /^\d{10}$/;
+      if (!mobile.match(phonePattern)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return false;
+      }
+
+      // Email validation
+      var emailPattern = /^\S+@\S+\.\S+$/;
+      if (!email.match(emailPattern)) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+
+      return true;
+    }
+
+    function capitalizeInput(fieldId) {
+      var fieldValue = document.getElementById(fieldId).value;
+      document.getElementById(fieldId).value = fieldValue.toUpperCase();
+    }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="https://mescoe.mespune.org/" class="logo-text" style="display: flex; align-items: center; color: #fff;">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <p class="logo-text">Modern Education Society's Wadia College of Engineering, Pune (Wadia College Campus)<br>Affiliated to SPPU, Approved by AICTE, Accredited by NAAC with 'A++' Grade, Accredited by NBA</p>
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h1 class="title">APPLICATION FORM</h1>
+      <form action="\search" method="post" onsubmit="return validateForm()">
+        <!-- Apply Now form elements -->
+        <div>
+          <label for="query">Application ID:</label>
+          <input type="text" name="query" id="query" placeholder="Enter Application ID" required>
+        </div>
+        <div>
+          <label for="first_name">First Name:</label>
+          <input type="text" name="first_name" id="first_name" placeholder="Enter First Name" onkeyup="capitalizeInput('first_name')" required>
+        </div>
+        <div>
+          <label for="middle_name">Middle Name:</label>
+          <input type="text" name="middle_name" id="middle_name" placeholder="Enter Middle Name" onkeyup="capitalizeInput('middle_name')">
+        </div>
+        <div>
+          <label for="last_name">Last Name:</label>
+          <input type="text" name="last_name" id="last_name" placeholder="Enter Last Name" onkeyup="capitalizeInput('last_name')">
+        </div>
+        <div>
+          <label for="department">Interested Department:</label>
+          <select name="department" id="department" required>
+            <option value="">Select Department</option>
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Electronics and Telecommunication Engineering (ENTC)">Electronics and Telecommunication Engineering (ENTC)</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <option value="Automobile and Robotics Engineering (A & R)">Automobile and Robotics Engineering (A & R)</option>
+          </select>
+        </div>
+        <div>
+          <label for="phone">Phone Number:</label>
+          <input type="text" name="mobile" id="mobile" placeholder="Enter Phone Number" required>
+        </div>
+        <div>
+          <label for="email">Email ID:</label>
+          <input type="text" name="email" id="email" placeholder="Enter Email ID" required>
+        </div>
+        <p><b>(NOTE</b> : Input your name as per your Admit card. 
+          e.g. Name as per admit card : Sharma Nikita Prakash<br> 
+          First Name : Sharma , Middle Name : Nikita , Last Name : Prakash)<br>
+        </p>
+        <button type="submit">Next</button>
+      </form>
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li class="flash {{ message_level(message) }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>
+      <h3>CONTACT US</h3>
+      Telephone : (020)-26163831 | 
+      Admission Enquiry : +91 7798883400 |
+      Email : info@mescoepune.org
+     </div>
+    <div><br>
+      <hr/>
+      Copyright © 2023 Modern Education Society
+    </div>
+  </footer>
+
+</body>
+</html>

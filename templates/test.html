@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Merit Lists</title>
+  <style>
+    /* CSS from index.html */
+    /* Global styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    /* Header section with logo and text */
+    .header {
+      display: flex;
+      align-items: center; /* Aligns vertically */
+      justify-content: center; /* Aligns horizontally */
+      padding: 10px 20px; /* Optional padding */
+      position: relative;
+      z-index: 2; /* Ensure header stays above other content */
+      
+      height: 20%; /* Set height of the header */
+      min-height: 100px; /* Set a minimum height for the header */
+      background-color: #001f3f; /* Dark blue background color */
+      border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
+      animation: slideDown 2s forwards; /* Animation for sliding down the header */
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center; /* Aligns logo and text vertically */
+      margin-left: 20px;
+    }
+
+    .logo {
+      width: 80px; /* Adjust the width to make the logo smaller */
+      height: auto;
+      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      background-size: cover;
+      background-position: center;
+      cursor: pointer; /* Make the logo clickable */
+    }
+
+    .logo img {
+      width: 100%; /* Make the image fill the container */
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    .logo-text {
+      font-size: 14px;
+      color: #fff; /* White text color */
+      line-height: 1.5;
+      margin-left: 20px;
+      cursor: pointer; /* Make the text clickable */
+      text-decoration: none; /* Remove underline */
+      transition: color 0.3s ease; /* Add transition effect for color change */
+    }
+
+    .logo-text:hover {
+      color: #ccc; /* Change text color on hover */
+    }
+
+    /* Rest of your styles remain the same: */
+    h1.title {
+      margin: 20px 0; /* Adjust top margin */
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      animation: slideFromRight 1.5s forwards; /* Animation for sliding from right */
+    }
+
+    @keyframes slideFromRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .button-container {
+      text-align: center;
+      animation: slideFromLeft 1.5s forwards; /* Animation for sliding from left */
+    }
+
+    @keyframes slideFromLeft {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 80vh; /* Set height of the container to occupy the remaining viewport height */
+    }
+
+    .card {
+      background-color: #ffffcc; /* Lighter yellow background color */
+      border-radius: 20px;
+      padding: 40px; /* Increase padding */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
+      animation: slideIn 2s forwards; /* Animation for sliding in the card */
+      width: 80%; /* Set initial card width */
+      max-width: 500px; /* Set maximum card width */
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Additional CSS for table */
+    #csv-content {
+      margin-top: 30px;
+      display: none;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th {
+      font-weight: normal;
+      padding: 8px;
+      border: none; /* Remove table borders */
+    }
+    td {
+      padding: 8px;
+      border: none; /* Remove table borders */
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2; /* Alternate row color */
+    }
+    a {
+      display: block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      color: #0056b3;
+    }
+
+    /* Additional CSS for buttons */
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 600px) {
+      .logo-text {
+        font-size: 12px;
+      }
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="https://mescoe.mespune.org/" class="logo-text" style="display: flex; align-items: center; color: #fff;">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <p class="logo-text">Modern Education Society's Wadia College of Engineering, Pune (Wadia College Campus)<br>Affiliated to SPPU, Approved by AICTE, Accredited by NAAC with 'A++' Grade, Accredited by NBA</p>
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h1 class="title">Available Merit Lists</h1>
+      <form id="selectMeritForm">
+          <label for="merit_list">Choose a merit list:</label>
+          <select id="merit_list" name="merit_list">
+              {% for merit_list in merit_lists %}
+                  <option value="{{ merit_list }}">{{ merit_list }}</option>
+              {% endfor %}
+          </select>
+          <button type="button" id="view-button">View Selected Merit List</button>
+          <button type="button" id="download-button">Download Merit List</button>
+      </form>
+      <a href="{{ url_for('index') }}">Back to Home page</a>
+    </div>
+  </div>
+
+  <div id="csv-content">
+    <h2>Selected Merit List</h2>
+    <table id="csv-table"></table>
+  </div>
+  
+  <script>
+function showCSVContent(filename) {
+    fetch(`/view_csv/${filename}`)
+        .then(response => response.text())
+        .then(data => {
+            const modifiedData = add_serial_number(data, filename); // Pass filename to add_serial_number
+            const table = document.getElementById('csv-table');
+            table.innerHTML = ''; // Clear the table before adding new data
+
+            const csvRows = modifiedData.split(/\r?\n|\r/);
+
+            // Create table headers based on the selected CSV file
+            let modifiedHeaders;
+            if (filename === 'jee.csv') {
+                modifiedHeaders = [
+                    'Serial No',
+                    'Merit No',
+                    'Application ID',
+                    "Candidate's Full Name",
+                    'Merit Exam',
+                    'Percentile/Mark',
+                    'JEE Math Percentile',
+                    'JEE Physics Percentile',
+                    'JEE Chemistry Percentile',
+                    'MHT-CET PCM Total Percentile',
+                    'MHT-CET Math Percentile',
+                    'MHT-CET Physics Percentile',
+                    'MHT-CET Chemistry Percentile',
+                    'HSC PCM %',
+                    'HSC Math %',
+                    'HSC Physics %',
+                    'HSC / Diploma / D. Voc. Total %',
+                    'SSC Total %',
+                    'SSC Math %',
+                    'SSC Science %',
+                    'SSC English %'
+                ];
+            } else if(filename === 'contact.csv'){
+              modifiedHeaders = [];
+            }
+            else
+            {
+                // Use existing column names
+                modifiedHeaders = [
+                    'Serial No',
+                    'Merit No',
+                    'Application ID',
+                    "Candidate's Full Name",
+                    'Merit Exam',
+                    'Category',
+                    'Gender',
+                    'PWD / Def',
+                    'EWS',
+                    'TFWS',
+                    'Orphan',
+                    'Minority Type (LM/RM)',
+                    'Percentile/Mark',
+                    'MHT-CET Math Percentile',
+                    'MHT-CET Physics Percentile',
+                    'MHT-CET Chemistry Percentile',
+                    'HSC PCM %',
+                    'HSC Math %',
+                    'HSC Physics %',
+                    'HSC / Diploma / D.Voc. Total %',
+                    'SSC Total %',
+                    'SSC Math %',
+                    'SSC Science %',
+                    'SSC English %'
+                ];
+            }
+
+            const tableHeaderRow = document.createElement('tr');
+            modifiedHeaders.forEach(header => {
+                const tableHeaderCell = document.createElement('th');
+                tableHeaderCell.textContent = header;
+                tableHeaderRow.appendChild(tableHeaderCell);
+            });
+            table.appendChild(tableHeaderRow);
+
+            // Add data rows with serial numbers
+            for (let i = 0; i < csvRows.length; i++) 
+            {
+                const csvData = csvRows[i].split(',');
+                if (csvData.length > 0) {
+                    const tableDataRow = document.createElement('tr');
+                    
+                    // Special handling for the first row to include it in the table
+                    if (i === 0) {
+                        const tableDataCell = document.createElement('td');
+                        tableDataCell.textContent = csvData[-1]; // Serial number
+                        tableDataRow.appendChild(tableDataCell);
+                        // Skip the first element (serial number) when adding other cells
+                        for (let j = 0; j < csvData.length; j++) {
+                            const tableDataCell = document.createElement('td');
+                            tableDataCell.textContent = csvData[j];
+                            tableDataRow.appendChild(tableDataCell);
+                        }
+                    } else {
+                        // Add remaining data columns for other rows
+                        csvData.forEach(value => {
+                            const tableDataCell = document.createElement('td');
+                            tableDataCell.textContent = value;
+                            tableDataRow.appendChild(tableDataCell);
+                        });
+                    }
+
+                    table.appendChild(tableDataRow);
+                }
+            }
+
+            document.getElementById('csv-content').style.display = 'block';
+
+            const card = document.querySelector('.card');
+            const tableWidth = table.offsetWidth;
+            const newCardWidth = tableWidth + 80; // Add extra padding
+            card.style.width = `${newCardWidth}px`;
+            card.style.left = `calc(50% - ${newCardWidth / 2}px)`;
+
+            const header = document.querySelector('.header');
+            header.style.width = ''; // Reset to default value
+        });
+}
+
+
+
+function add_serial_number(data, filename) {
+    // Split the data into rows
+    const rows = data.split('\n');
+
+    // If the filename is 'jee.csv', add serial numbers starting from 1
+    if (filename === 'jee.csv') {
+        for (let i = 0; i < rows.length; i++) {
+            rows[i] = (i + 1) + ',' + rows[i];
+        }
+    } else {
+        // For other files, add serial numbers starting from 2
+        for (let i = 1; i < rows.length; i++) {
+            rows[i] = (i) + ',' + rows[i];
+        }
+    }
+
+    // Join the rows back into a single string and return
+    return rows.join('\n');
+}
+
+
+document.getElementById('view-button').addEventListener('click', function() {
+    var selectedCSV = document.getElementById('merit_list').value;
+    if (selectedCSV) {
+        showCSVContent(selectedCSV);
+    } else {
+        alert('Please select a CSV file first.');
+    }
+});
+
+document.getElementById('download-button').addEventListener('click', function() {
+    var selectedCSV = document.getElementById('merit_list').value;
+    if (selectedCSV) {
+        window.location.href = `/download_csv/${selectedCSV}`;
+    } else {
+        alert('Please select a CSV file first.');
+    }
+});
+
+  </script>
+
+</body>
+</html>
