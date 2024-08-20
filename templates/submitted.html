@@ -48,9 +48,9 @@
     }
 
     .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
+      width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 160px; /* Ensure the logo doesn't exceed 100px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -62,10 +62,11 @@
     }
 
     .logo-text {
-      font-size: 14px;
+      font-size: 25px;
       color: #fff; /* White text color */
       line-height: 1.5;
       margin-left: 20px;
+      text-align: center;
       cursor: pointer; /* Make the text clickable */
       text-decoration: none; /* Remove underline */
       transition: color 0.3s ease; /* Add transition effect for color change */
@@ -77,13 +78,16 @@
 
     /* Card */
     .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
+      background-color: white; /* Lighter yellow background color */
       border-radius: 20px;
       padding: 20px; /* Increase padding */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
       width: 80%; /* Set card width */
       max-width: 600px; /* Set maximum card width */
       margin: 50px auto; /* Center align card */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center align content */
     }
 
     .container {
@@ -103,6 +107,7 @@
       font-size: 18px;
       color: #333; /* Dark text color */
     }
+
     .footer {
       position: relative;
       background-color: #001f3f; /* Same color as header */
@@ -112,6 +117,12 @@
       border-radius: 20px 20px 0 0; /* Only top edges rounded */
       margin-top: 20px; /* Add space between card and footer */
       margin-bottom: 0px;
+    }
+
+    .success-icon {
+      width: 100px; /* Adjust the size as needed */
+      height: 100px;
+      margin-bottom: 20px; /* Space between icon and text */
     }
   </style>
 </head>
@@ -128,10 +139,11 @@
   </header>
 
   <div class="container">
-  <div class="card">
-    <h2>Submitted Successfully</h2>
-    <p>Your submission has been received.</p>
-  </div>
+    <div class="card">
+      <img src="{{ url_for('static', filename='icons8-success.gif') }}" alt="Success" class="success-icon">
+      <h2>Submitted Successfully</h2>
+      <p>Your submission has been received.</p>
+    </div>
   </div>
 
   <footer class="footer">

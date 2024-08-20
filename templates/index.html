@@ -10,21 +10,16 @@
       font-family: sans-serif; /* Set font to sans-serif */
       margin: 0;
       padding: 0;
+      background-color: whitesmoke;
       overflow-x: hidden; /* Prevent horizontal scrolling */
     }
 
-    /* Header section with logo and text */
     .header {
       display: flex;
       align-items: center; /* Aligns vertically */
       justify-content: center; /* Aligns horizontally */
       padding: 10px 20px; /* Optional padding */
-      position: relative;
-      z-index: 2; /* Ensure header stays above other content */
-      
-      height: 20%; /* Set height of the header */
-      min-height: 100px; /* Set a minimum height for the header */
-      max-height: 150px; /* Set a maximum height for the header */
+      width: 100%;
       background-color: #001f3f; /* Dark blue background color */
       border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
       animation: slideDown 2s forwards; /* Animation for sliding down the header */
@@ -48,9 +43,9 @@
     }
 
     .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
+      width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -62,7 +57,8 @@
     }
 
     .logo-text {
-      font-size: 14px;
+      font-size: 25px;
+      text-align: center;
       color: #fff; /* White text color */
       line-height: 1.5;
       margin-left: 20px;
@@ -123,7 +119,7 @@
     }
 
     .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
+      background-color: #ffffff; /* Lighter yellow background color */
       border-radius: 20px;
       padding: 40px; /* Increase padding */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */

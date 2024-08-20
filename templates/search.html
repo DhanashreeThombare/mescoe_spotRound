@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search</title>
+  <title>Application Form</title>
   <style>
-    /* Global styles */
     body {
-      font-family: sans-serif; /* Set font to sans-serif */
+      font-family: Arial, sans-serif;
+      background-color: whitesmoke;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* Change from center to flex-start */
+      height: 100vh;
       margin: 0;
-      padding: 0;
-      overflow-x: hidden; /* Prevent horizontal scrolling */
-      background-color: #f4f4f4; /* Background color */
-      text-align: left; /* Center align text */
     }
 
     /* Header section with logo and text */
@@ -21,12 +22,7 @@
       align-items: center; /* Aligns vertically */
       justify-content: center; /* Aligns horizontally */
       padding: 10px 20px; /* Optional padding */
-      position: relative;
-      z-index: 2; /* Ensure header stays above other content */
-      
-      height: 20%; /* Set height of the header */
-      min-height: 100px; /* Set a minimum height for the header */
-      max-height: 150px; /* Set a maximum height for the header */
+      width: 100%;
       background-color: #001f3f; /* Dark blue background color */
       border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
       animation: slideDown 2s forwards; /* Animation for sliding down the header */
@@ -50,9 +46,9 @@
     }
 
     .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
+      width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -64,7 +60,8 @@
     }
 
     .logo-text {
-      font-size: 14px;
+      font-size: 25px;
+      text-align: center;
       color: #fff; /* White text color */
       line-height: 1.5;
       margin-left: 20px;
@@ -77,68 +74,254 @@
       color: #ccc; /* Change text color on hover */
     }
 
-    /* Rest of your styles remain the same: */
-    h1.title {
-      margin: 20px 0; /* Adjust top margin */
-      color: #333;
-      font-weight: bold;
-      text-align: center;
-      animation: slideFromRight 1.5s forwards; /* Animation for sliding from right */
-    }
-
-    @keyframes slideFromRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .button-container {
-      text-align: center;
-      animation: slideFromLeft 1.5s forwards; /* Animation for sliding from left */
-    }
-
-    @keyframes slideFromLeft {
-      from {
-        transform: translateX(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .container {
-      position: relative;
-      height: 80%; /* Set height of the container to occupy the remaining viewport height */
-      min-height: 600px; /* Set a minimum height for the container */
-      max-height: 1000px; /* Set a maximum height for the container */
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 40px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-      margin-bottom: 40px;
-    }
-
-    .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
-      border-radius: 20px;
-      padding: 40px; /* Increase padding */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
-      animation: slideIn 2s forwards; /* Animation for sliding in the card */
-      width: 65%; /* Set card width */
-      max-width: 700px; /* Set maximum card width */
+      width: 50%;
       margin-top: 5%;
     }
 
-    @keyframes slideIn {
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      animation: slideIn 2s forwards;
+      width: 100%;
+      margin-top: 5%;
+    }
+
+    .form-title {
+      color: #007BFF;
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 35px;
+      position: relative;
+    }
+
+    .form-title::after,
+    .form-title::before {
+      content: '';
+      display: block;
+      width: 200px;
+      height: 2px;
+      background-color: #007BFF;
+      position: absolute;
+      top: 50%;
+    }
+
+    .form-title::before {
+      left: -10px;
+    }
+
+    .form-title::after {
+      right: -10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="file"] {
+      width: 100%;
+      padding: 5px 0;
+      border: none;
+      border-bottom: 1px solid black;
+      outline: none;
+      height: 20px;
+    }
+    .form-group input[type="email"],
+    .form-group input[type="number"]{
+      width: 70%;
+      padding: 5px 0;
+      border: none;
+      border-bottom: 1px solid black;
+      outline: none;
+      height: 20px;
+    }
+
+    .form-group input::placeholder {
+      color: grey;
+    }
+
+    .form-group input:focus {
+      border-bottom: 1px solid blue;
+    }
+
+    .required {
+      color: red;
+    }
+
+    .name-fields {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .name-fields input {
+      width: 32%;
+      padding: 10px 0;
+      border: none;
+      border-bottom: 1px solid black;
+      outline: none;
+      height: 20px;
+    }
+
+    .name-fields input::placeholder {
+      color: grey;
+    }
+
+    .name-fields input:focus {
+      border-bottom: 1px solid blue;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .checkbox-group input {
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #ffffff;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .otp-btn,button:hover {
+      background-color: #0056b3;
+    }
+    .otp-btn{
+      background-color: #007BFF;
+      color: #ffffff;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 20%;
+      margin-left:40px;
+    }
+    .form-footer {
+      background-color: #001f3f; /* Same color as header */
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      width: 100%;
+      border-radius: 20px 20px 0 0; /* Only top edges rounded */
+      margin-top: 5%; /* Add space between card and footer */
+    }
+
+    
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 30%; /* Could be more or less, depending on screen size */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.5s ease-in-out;
+      text-align: center;
+    }
+
+    .modal-content p {
+      color: #d9534f; /* Bootstrap danger color */
+      font-weight: bold;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-content button {
+      background-color: #d9534f; /* Bootstrap danger color */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .modal-content button:hover {
+      background-color: #c9302c; /* Darker shade of danger color */
+    }
+
+    @keyframes fadeIn {
       from {
-        transform: translateY(-50%);
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Instruction Box Styles */
+    .instruction-box {
+      background-color: white; /* Light yellow background */
+      border: 1px solid black; /* Darker yellow border */
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      margin: 20px;
+      animation: slideInInstruction 1.5s forwards; /* Animation for sliding in the instruction box */
+    }
+
+    @keyframes slideInInstruction {
+      from {
+        transform: translateY(-20%);
         opacity: 0;
       }
       to {
@@ -147,59 +330,65 @@
       }
     }
 
-    /* Apply the same styling to form elements */
-    form {
-      margin-top: 30px;
+    @media (max-width: 768px) {
+      .instruction-box {
+        margin: 10px;
+        padding: 15px;
+      }
+      .modal-content {
+        width: 80%; /* Make the modal content wider on smaller screens */
+      }
     }
 
-    label {
-      font-weight: bold;
-    }
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    select {
-      padding: 10px;
-      margin: 10px 0;
-      width: 100%;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
 
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+.popup-content h2 {
+  margin-top: 0;
+}
 
-    button:hover {
-      background-color: #0056b3;
-    }
+.popup-content p {
+  margin: 20px 0;
+}
 
-    p{
-      font-size: xx-small;
-    }
+#close-popup {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    /* Footer */
-    .footer {
-      position: relative;
-      background-color: #001f3f; /* Same color as header */
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      border-radius: 20px 20px 0 0; /* Only top edges rounded */
-      margin-top: 5%; /* Add space between card and footer */
-    }
+#close-popup:hover {
+  background-color: #0056b3;
+}
   </style>
-   <script>
+  <script>
     function validateForm() {
-      var mobile = document.getElementById('phone').value;
+      var mobile = document.getElementById('mobile').value;
       var email = document.getElementById('email').value;
+
 
       // Phone number validation
       var phonePattern = /^\d{10}$/;
@@ -215,6 +404,24 @@
         return false;
       }
 
+      // Check if the file name matches the query
+      const query = document.getElementById('query').value;
+      const fileInput = document.getElementById('file');
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        if (!fileName.includes(query)) {
+          alert(`The uploaded file name (${fileName}) does not match the Application ID (${query}).`);
+          return false;
+        }
+      }
+
+    const checkboxes = document.querySelectorAll('input[name="department"]:checked');
+    const selectedDepartments = [];
+    checkboxes.forEach((checkbox) => {
+        selectedDepartments.push(checkbox.value);
+    });
+
+    document.getElementById('departments').value = selectedDepartments.join(', ');
       return true;
     }
 
@@ -222,7 +429,30 @@
       var fieldValue = document.getElementById(fieldId).value;
       document.getElementById(fieldId).value = fieldValue.toUpperCase();
     }
+
+    function showAlert() {
+      const modal = document.getElementById('dataNotFoundModal');
+      modal.style.display = 'block';
+    }
+
+    function closeAlert() {
+      const modal = document.getElementById('dataNotFoundModal');
+      modal.style.display = 'none';
+      // Reset the form
+      document.getElementById('searchForm').reset();
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const instructionBox = document.getElementById('instructionBox');
+      instructionBox.style.display = 'block';
+    });
+
+    function closeInstructionBox() {
+      const instructionBox = document.getElementById('instructionBox');
+      instructionBox.style.display = 'none';
+    }
   </script>
+
 </head>
 <body>
   <header class="header">
@@ -236,76 +466,212 @@
     </div>
   </header>
 
-  <div class="container">
-    <div class="card">
-      <h1 class="title">APPLICATION FORM</h1>
-      <form action="\search" method="post" onsubmit="return validateForm()">
-        <!-- Apply Now form elements -->
-        <div>
-          <label for="query">Application ID:</label>
-          <input type="text" name="query" id="query" placeholder="Enter Application ID" required>
-        </div>
-        <div>
-          <label for="first_name">First Name:</label>
-          <input type="text" name="first_name" id="first_name" placeholder="Enter First Name" onkeyup="capitalizeInput('first_name')" required>
-        </div>
-        <div>
-          <label for="middle_name">Middle Name:</label>
-          <input type="text" name="middle_name" id="middle_name" placeholder="Enter Middle Name" onkeyup="capitalizeInput('middle_name')">
-        </div>
-        <div>
-          <label for="last_name">Last Name:</label>
-          <input type="text" name="last_name" id="last_name" placeholder="Enter Last Name" onkeyup="capitalizeInput('last_name')">
-        </div>
-        <div>
-          <label for="department">Interested Department:</label>
-          <select name="department" id="department" required>
-            <option value="">Select Department</option>
-            <option value="Computer Engineering">Computer Engineering</option>
-            <option value="Electronics and Telecommunication Engineering (ENTC)">Electronics and Telecommunication Engineering (ENTC)</option>
-            <option value="Mechanical Engineering">Mechanical Engineering</option>
-            <option value="Automobile and Robotics Engineering (A & R)">Automobile and Robotics Engineering (A & R)</option>
-          </select>
-        </div>
-        <div>
-          <label for="phone">Phone Number:</label>
-          <input type="text" name="mobile" id="mobile" placeholder="Enter Phone Number" required>
-        </div>
-        <div>
-          <label for="email">Email ID:</label>
-          <input type="text" name="email" id="email" placeholder="Enter Email ID" required>
-        </div>
-        <p><b>(NOTE</b> : Input your name as per your Admit card. 
-          e.g. Name as per admit card : Sharma Nikita Prakash<br> 
-          First Name : Sharma , Middle Name : Nikita , Last Name : Prakash)<br>
-        </p>
-        <button type="submit">Next</button>
-      </form>
-
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="flashes">
-          {% for message in messages %}
-            <li class="flash {{ message_level(message) }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    </div>
+  <div id="instructionBox" class="instruction-box" style="display: none;">
+    <span class="close" onclick="closeInstructionBox()" style="float: right; cursor: pointer;">&times;</span>
+    <p style="color:red;text-align:left;font-size:15px"><b>Instructions :</b> <br>
+	  1. Input your name as per your Admit card. 
+		(e.g. Name as per admit card : QWERTY ASDFGH ZXCVBN then, 
+     <b> First Name : QWERTY , Middle Name : ASDFGH , Last Name : ZXCVBN)</b><br>
+     (तुमच्या प्रवेशपत्रानुसार तुमचे नाव भरा. (उदाहरणार्थ, प्रवेशपत्रानुसार नाव : QWERTY ASDFGH ZXCVBN, तर पहिले नाव : QWERTY, मधले नाव : ASDFGH, शेवटचे नाव : ZXCVBN असे भरा))<br>
+	  2. Do not use spaces while entering the Application ID and name.<br>
+    (अर्ज क्रमांक आणि नाव भरताना रिकाम्या जागांचा वापर करू नका.)<br>
+	  3. The file size should be less than or equal to 1 MB.<br>
+    (फाइलचा आकार 1 MB किंवा त्यापेक्षा कमी असावा.)<br>
+    4. Rename your Allocation letter as Application ID before uploading (eg.ENXXXXXXXX.pdf)<br>
+    (अपलोड करण्यापूर्वी तुमच्या अर्ज क्रमांकानुसार नियुक्ती पत्राचे नाव बदला (उदाहरणार्थ ENXXXXXXXX.pdf).)<br>
+    5. Candidate having long name containing more then three name insert only first three name.
+    (e.g. Name as per admit card : ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD then,
+    <br><b>   First Name : ASDFGHJ , Middle Name : POIUYTR , Last Name : QWERTY</b>)<br>
+    (ज्या उमेदवाराचे नाव तीनपेक्षा जास्त शब्दांचे आहे त्यांनी फक्त पहिले तीनच शब्द भरावेत. (उदाहरणार्थ, प्रवेशपत्रानुसार नाव : ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD, तर पहिले नाव : ASDFGHJ, मधले नाव : POIUYTR, शेवटचे नाव : QWERTY असे भरा))<br>
+    </p>
   </div>
 
-  <footer class="footer">
+  <div class="form-container">
+    <div class="card">
+        <form id="applicationForm" action="/search" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+            <h1 class="form-title">Application Form</h1>
+            <div class="form-group">
+                <label for="query">Application ID <span class="required">*</span></label>
+                <input type="text" id="query" name="query" required>
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full name <span class="required">*</span></label>
+                <div class="name-fields">
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" onkeyup="capitalizeInput('first_name')" required>
+                    <input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" onkeyup="capitalizeInput('middle_name')">
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name" onkeyup="capitalizeInput('last_name')">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>What department are you interested in? <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="department" value="Computer Engineering"> Computer Engineering</label>
+                    <label><input type="checkbox" name="department" value="E & TC Engineering"> E & TC Engineering</label>
+                    <label><input type="checkbox" name="department" value="Mechanical Engineering"> Mechanical Engineering</label>
+                    <label><input type="checkbox" name="department" value="A & R Engineering"> A & R Engineering</label>
+                    <input type="hidden" id="departments" name="departments">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Contact number <span class="required">*</span></label>
+                <input type="text" id="mobile" name="mobile" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+                <button class="otp-btn" type="button" onclick="sendOTP()">Send OTP</button>
+            </div>
+            <div class="form-group">
+                <label for="otp">OTP <span class="required">*</span></label>
+                <input type="number" id="otp" name="otp" required>
+                <button class="otp-btn" type="button" onclick="verifyOTP()" required>Verify OTP</button>
+            </div>
+            <div class="form-group">
+                <label for="file">Upload Allotment Letter (Rename your file as your Application ID) <span class="required">*</span></label>
+                <input type="file" id="file" name="file" required>
+            </div>
+            <button type="submit">Next</button>
+        </form>
+        {% if data_not_found %}
+            <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    showAlert();
+                });
+            </script>
+        {% endif %}
+    </div>
+</div>
+
+  <footer class="form-footer">
     <div>
       <h3>CONTACT US</h3>
       Telephone : (020)-26163831 | 
       Admission Enquiry : +91 7798883400 |
       Email : info@mescoepune.org
-     </div>
+    </div>
     <div><br>
       <hr/>
       Copyright © 2023 Modern Education Society
     </div>
   </footer>
+  
+  <!-- Modal structure -->
+  <div id="dataNotFoundModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAlert()">&times;</span>
+      <p>Incorrect Application ID or Name. Recheck the details you entered and Try again..!</p>
+      <button onclick="closeAlert()">Cancel</button>
+    </div>
+  </div>
+  <div id="popup" class="popup-overlay">
+    <div class="popup-content">
+      <h2>Instructions</h2>
+      <p>1) If the form reloads after you click the Next button, it could be because you haven't uploaded the file with your ENXXXXXXXX number or you are trying to fill the form more than once.</p>
+      <p> (जर तुम्ही Next बटणावर क्लिक केल्यानंतर फॉर्म पुन्हा लोड होत असेल, तर कारण असू शकते की तुम्ही तुमचा ENXXXXXXXX क्रमांक अपलोड केलेला नाही किंवा तुम्ही फॉर्म एकापेक्षा जास्त वेळा भरत आहात.)</p>
+      <p>2) If you receive a confirmation email, your registration is successful.</p>
+      <p> (जर तुम्हाला पुष्टीकरण ईमेल मिळाला असेल, तर तुमची नोंदणी यशस्वी झाली आहे.)</p>
+      <button id="close-popup">Got it!</button>
+    </div>
+  </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const popup = document.getElementById('popup');
+      const closePopupButton = document.getElementById('close-popup');
+
+      closePopupButton.addEventListener('click', function() {
+        popup.style.display = 'none';
+      });
+    });
+  </script> 
+  <script>
+    function sendOTP() {
+        const email = document.getElementById('email').value;
+        fetch('/send_otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+        })
+        .then(response => response.json())
+        .then(data => alert(data.message))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+        fetch('/verify_otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otp }),
+        })
+        .then(response => response.json())
+        .then(data => alert(data.message))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function validateForm() {
+        const mobile = document.getElementById('mobile').value;
+        const email = document.getElementById('email').value;
+
+        // Phone number validation
+        const phonePattern = /^\d{10}$/;
+        if (!mobile.match(phonePattern)) {
+            alert("Please enter a valid 10-digit phone number.");
+            return false;
+        }
+
+        // Email validation
+        const emailPattern = /^\S+@\S+\.\S+$/;
+        if (!email.match(emailPattern)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        // Check email verification status
+        // if (!sessionStorage.getItem('email_verified')) {
+        //     alert("Please verify your email before submitting the form.");
+        //     return false;
+        // }
+
+        // Concatenate checkbox values
+        const checkboxes = document.querySelectorAll('input[name="department"]:checked');
+        const selectedDepartments = [];
+        checkboxes.forEach((checkbox) => {
+            selectedDepartments.push(checkbox.value);
+        });
+
+        document.getElementById('departments').value = selectedDepartments.join(', ');
+
+        return true;
+    }
+
+    function capitalizeInput(fieldId) {
+        const fieldValue = document.getElementById(fieldId).value;
+        document.getElementById(fieldId).value = fieldValue.toUpperCase();
+    }
+
+    function showAlert() {
+        const modal = document.getElementById('dataNotFoundModal');
+        modal.style.display = 'block';
+    }
+
+    function closeAlert() {
+        const modal = document.getElementById('dataNotFoundModal');
+        modal.style.display = 'none';
+        // Reset the form
+        document.getElementById('searchForm').reset();
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const instructionBox = document.getElementById('instructionBox');
+        setTimeout(() => {
+            instructionBox.style.display = 'block';
+        }, 2000);
+    });
+</script> 
 </body>
 </html>

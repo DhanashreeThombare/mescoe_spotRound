@@ -124,7 +124,7 @@
     }
 
     .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
+      background-color: #ffffff; /* Lighter yellow background color */
       border-radius: 20px;
       padding: 40px; /* Increase padding */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
@@ -149,13 +149,34 @@
       margin-bottom: 10px;
     }
 
-    input[type="password"] {
-      width: calc(100% - 12px);
+    .password-container {
+      position: relative;
+    }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
       padding: 6px;
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 3px;
       box-sizing: border-box;
+    }
+
+    .toggle-password-button {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #007bff;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-password-button:hover {
+      color: #0056b3;
     }
 
     input[type="submit"] {
@@ -170,6 +191,23 @@
 
     input[type="submit"]:hover {
       background-color: #0056b3;
+    }
+
+    .forgot-password {
+      display: block;
+      margin-top: 10px;
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .forgot-password a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password a:hover {
+      color: #0056b3;
     }
 
     /* Responsive layout */
@@ -196,13 +234,16 @@
       }
     }
   </style>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7qg1tlc1KZ2rF5wrU6fqE+/onVJ0T4/nv3flk5jx2z09D3wR+e7yxIHg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <header class="header">
     <div class="logo-container">
       <a href="https://mescoe.mespune.org/" class="logo-text" style="display: flex; align-items: center; color: #fff;">
         <div class="logo">
-          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+          <!-- Replace this path with the path to your formal logo image -->
+          <img src="path/to/your/formal_logo.png" alt="Logo">
         </div>
         <p class="logo-text">Modern Education Society's Wadia College of Engineering, Pune (Wadia College Campus)<br>Affiliated to SPPU, Approved by AICTE, Accredited by NAAC with 'A++' Grade, Accredited by NBA</p>
       </a>
@@ -214,11 +255,34 @@
       <h1 class="title">Admin Login</h1>
       <form method="POST" action="/admin_login">
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <br><br>
+        <div class="password-container">
+          <input type="password" name="password" id="password" required>
+          <button type="button" class="toggle-password-button" onclick="togglePasswordVisibility()">
+            <span id="toggle-text">Show</span>
+          </button>
+        </div>
+        <br>
         <input type="submit" value="Login">
       </form>
+      <div class="forgot-password">
+        <a href="/forgot_password">Forgot Password?</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    function togglePasswordVisibility() {
+      const passwordField = document.getElementById('password');
+      const toggleText = document.getElementById('toggle-text');
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleText.textContent = 'Hide';
+      } else {
+        passwordField.type = 'password';
+        toggleText.textContent = 'Show';
+      }
+    }
+  </script>
 </body>
 </html>

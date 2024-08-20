@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden; /* Prevent horizontal scrolling */
-      background-color: #f4f4f4; /* Background color */
+      background-color: whitesmoke; /* Background color */
       text-align: center; /* Center align text */
     }
 
@@ -48,9 +48,9 @@
     }
 
     .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
+      width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 160px; /* Ensure the logo doesn't exceed 100px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -62,10 +62,11 @@
     }
 
     .logo-text {
-      font-size: 14px;
+      font-size: 25px;
       color: #fff; /* White text color */
       line-height: 1.5;
       margin-left: 20px;
+      text-align: center;
       cursor: pointer; /* Make the text clickable */
       text-decoration: none; /* Remove underline */
       transition: color 0.3s ease; /* Add transition effect for color change */
@@ -91,7 +92,7 @@
     }
 
     .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
+      background-color: white; /* Lighter yellow background color */
       border-radius: 20px;
       padding: 20px; /* Increase padding */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
@@ -118,7 +119,7 @@
     form {
       margin-top: 30px;
       padding-top: 30px;
-      text-align: left;
+      text-align: center;
     }
 
     label {
@@ -141,6 +142,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      align-items: center;
     }
 
     button:hover {
@@ -187,7 +189,7 @@
 }
 
 #note{
-      font-size: xx-small;
+      font-size: small;
     }
 /* Footer */
 .footer {
@@ -217,102 +219,98 @@
   
   {% if cross_checked %}
     <div class="container">
-      {% if results_dict.get('jee') %}
-      <div class="result-container">
-        <h2 class="result-heading">JEE Results</h2>
-        <div class="card">
-          {% for row in results_dict.get('jee') %}
-            {% for key, value in row.items() %}
-              {% if loop.index > 1 %}
-                <label class="result-label">{{ key }}:</label>
-                <input type="text" class="result-value" value="{{ value }}" readonly><br>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </div>
-      </div>
-      <br>
-    {% endif %}
-    
-      
       {% if results_dict.get('cet') %}
         <div class="result-container">
           <h2 class="result-heading">CET Results</h2>
           <div class="card">
             {% for row in results_dict.get('cet') %}
+              {% for key, value in row.items() %}
+                {% if loop.index > 1 %}
+                  <label class="result-label">{{ key }}:</label>
+                  <input type="text" class="result-value" value="{{ value }}" readonly><br>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        <br>
+      {% endif %}
+    
+      {% if results_dict.get('jee') %}
+        <div class="result-container">
+          <h2 class="result-heading">JEE Results</h2>
+          <div class="card">
+            {% for row in results_dict.get('jee') %}
               <label class="result-label">Application ID:</label>
               <input type="text" class="result-value" value="{{ row["Unnamed: 0"] }}" readonly><br>
               <label class="result-label">Candidate's Full Name:</label>
               <input type="text" class="result-value" value="{{ row["Unnamed: 1"] }}" readonly><br>
               <label class="result-label">Merit Exam:</label>
               <input type="text" class="result-value" value="{{ row["Unnamed: 2"] }}" readonly><br>
-              <label class="result-label">Category:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 3"] }}" readonly><br>
-              <label class="result-label">Gender:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 4"] }}" readonly><br>
-              <label class="result-label">PWD / Def:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 5"] }}" readonly><br>
-              <label class="result-label">EWS:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 6"] }}" readonly><br>
-              <label class="result-label">TFWS:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 7"] }}" readonly><br>
-              <label class="result-label">Orphan:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 8"] }}" readonly><br>
-              <label class="result-label">Minority Type (LM/RM):</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 9"] }}" readonly><br>
               <label class="result-label">Percentile/Mark:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 10"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 3"] }}" readonly><br>
+              <label class="result-label">JEE Maths Percentile:</label>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 4"] }}" readonly><br>
+              <label class="result-label">JEE Physics Percentile:</label>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 5"] }}" readonly><br>
+              <label class="result-label">JEE Chemistry Percentile:</label>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 6"] }}" readonly><br>
+              <label class="result-label">MHT-CET PCM Total Percentile:</label>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 7"] }}" readonly><br>
               <label class="result-label">MHT-CET Math Percentile:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 11"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 8"] }}" readonly><br>
               <label class="result-label">MHT-CET Physics Percentile:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 12"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 9"] }}" readonly><br>
               <label class="result-label">MHT-CET Chemistry Percentile:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 13"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 10"] }}" readonly><br>
               <label class="result-label">HSC PCM %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 14"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 11"] }}" readonly><br>
               <label class="result-label">HSC Math %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 15"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 12"] }}" readonly><br>
               <label class="result-label">HSC Physics %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 16"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 13"] }}" readonly><br>
               <label class="result-label">HSC / Diploma / D.Voc. Total %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 17"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 14"] }}" readonly><br>
               <label class="result-label">SSC Total %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 18"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 15"] }}" readonly><br>
               <label class="result-label">SSC Math %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 19"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 16"] }}" readonly><br>
               <label class="result-label">SSC Science %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 20"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 17"] }}" readonly><br>
               <label class="result-label">SSC English %:</label>
-              <input type="text" class="result-value" value="{{ row["Unnamed: 21"] }}" readonly><br>
+              <input type="text" class="result-value" value="{{ row["Unnamed: 18"] }}" readonly><br>
             {% endfor %}
           </div>
         </div>
       {% endif %}
     </div>
-
+    
     <form action="{{ url_for('submit') }}" method="post">
       <div class="checkbox-container">
         <input type="checkbox" id="verification" required>
         <label for="verification">All details are verified by the candidate</label>
       </div>
       <br>
-      <button type="submit">Submit</button>
+      <!--<label for="email">Email:</label>
+      <input type="email" id="email" name="email" required><br>
+      <br>-->
+      
+        <button type="submit">Submit</button>
+      
       <br>
-      <p id="note"><b>NOTE :</b> If shown details are not correct please contact the college</p>
+      <p id="note" style="color: red;"><b>NOTE : If shown details are not correct please contact the college</b></p>
     </form>
   {% else %}
     <p>No results found matching the details entered.</p>
   {% endif %}
 
-    
-  
   <footer class="footer">
     <div>
       <h3>CONTACT US</h3>
       Telephone : (020)-26163831 | 
       Admission Enquiry : +91 7798883400 |
       Email : info@mescoepune.org
-     </div>
+    </div>
     <div><br>
       <hr/>
       Copyright © 2023 Modern Education Society

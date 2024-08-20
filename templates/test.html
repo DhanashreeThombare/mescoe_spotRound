@@ -9,23 +9,18 @@
     /* Global styles */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: whitesmoke;
       margin: 0;
       padding: 0;
       text-align: center;
     }
 
-    /* Header section with logo and text */
     .header {
       display: flex;
       align-items: center; /* Aligns vertically */
       justify-content: center; /* Aligns horizontally */
       padding: 10px 20px; /* Optional padding */
-      position: relative;
-      z-index: 2; /* Ensure header stays above other content */
-      
-      height: 20%; /* Set height of the header */
-      min-height: 100px; /* Set a minimum height for the header */
+      width: 100%;
       background-color: #001f3f; /* Dark blue background color */
       border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
       animation: slideDown 2s forwards; /* Animation for sliding down the header */
@@ -49,9 +44,9 @@
     }
 
     .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
+      width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -63,7 +58,8 @@
     }
 
     .logo-text {
-      font-size: 14px;
+      font-size: 25px;
+      text-align: center;
       color: #fff; /* White text color */
       line-height: 1.5;
       margin-left: 20px;
@@ -96,6 +92,7 @@
       }
     }
 
+
     .button-container {
       text-align: center;
       animation: slideFromLeft 1.5s forwards; /* Animation for sliding from left */
@@ -121,7 +118,7 @@
     }
 
     .card {
-      background-color: #ffffcc; /* Lighter yellow background color */
+      background-color: #ffffff; /* Lighter yellow background color */
       border-radius: 20px;
       padding: 40px; /* Increase padding */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
@@ -154,11 +151,13 @@
     th {
       font-weight: normal;
       padding: 8px;
-      border: none; /* Remove table borders */
+      border : 1px solid #ccc;
+      font-size : 12px;
     }
     td {
       padding: 8px;
-      border: none; /* Remove table borders */
+      border : 1px solid #ccc;
+      font-size : 12px;
     }
     tr:nth-child(even) {
       background-color: #f2f2f2; /* Alternate row color */
@@ -173,10 +172,37 @@
       color: #0056b3;
     }
 
-    /* Additional CSS for buttons */
+    /* Additional CSS for buttons and dropdown */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    select {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
     button {
       padding: 10px 20px;
-      margin: 10px;
       border: none;
       border-radius: 5px;
       background-color: #007bff;
@@ -197,6 +223,12 @@
       .card {
         padding: 20px;
       }
+      select {
+        width: 100%;
+      }
+      .button-container {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -216,14 +248,17 @@
     <div class="card">
       <h1 class="title">Available Merit Lists</h1>
       <form id="selectMeritForm">
-          <label for="merit_list">Choose a merit list:</label>
-          <select id="merit_list" name="merit_list">
-              {% for merit_list in merit_lists %}
-                  <option value="{{ merit_list }}">{{ merit_list }}</option>
-              {% endfor %}
-          </select>
+        <label for="merit_list">Choose a merit list:</label>
+        <select id="merit_list" name="merit_list">
+            {% for merit_list in merit_lists %}
+                <option value="{{ merit_list }}">{{ merit_list }}</option>
+            {% endfor %}
+        </select>
+        <div class="button-container">
           <button type="button" id="view-button">View Selected Merit List</button>
           <button type="button" id="download-button">Download Merit List</button>
+          <button type="button" id="download-all-pdf">Download All PDFs (ZIP)</button>
+        </div>
       </form>
       <a href="{{ url_for('index') }}">Back to Home page</a>
     </div>
@@ -235,170 +270,133 @@
   </div>
   
   <script>
-function showCSVContent(filename) {
-    fetch(`/view_csv/${filename}`)
-        .then(response => response.text())
-        .then(data => {
-            const modifiedData = add_serial_number(data, filename); // Pass filename to add_serial_number
-            const table = document.getElementById('csv-table');
-            table.innerHTML = ''; // Clear the table before adding new data
+    document.getElementById('download-all-pdf').addEventListener('click', function() {
+        window.location.href = '/download_all_pdfs';
+    });
 
-            const csvRows = modifiedData.split(/\r?\n|\r/);
+    function showCSVContent(filename) {
+        fetch(`/view_csv/${filename}`)
+            .then(response => response.text())
+            .then(data => {
+                const table = document.getElementById('csv-table');
+                table.innerHTML = ''; // Clear the table before adding new data
 
-            // Create table headers based on the selected CSV file
-            let modifiedHeaders;
-            if (filename === 'jee.csv') {
-                modifiedHeaders = [
-                    'Serial No',
-                    'Merit No',
-                    'Application ID',
-                    "Candidate's Full Name",
-                    'Merit Exam',
-                    'Percentile/Mark',
-                    'JEE Math Percentile',
-                    'JEE Physics Percentile',
-                    'JEE Chemistry Percentile',
-                    'MHT-CET PCM Total Percentile',
-                    'MHT-CET Math Percentile',
-                    'MHT-CET Physics Percentile',
-                    'MHT-CET Chemistry Percentile',
-                    'HSC PCM %',
-                    'HSC Math %',
-                    'HSC Physics %',
-                    'HSC / Diploma / D. Voc. Total %',
-                    'SSC Total %',
-                    'SSC Math %',
-                    'SSC Science %',
-                    'SSC English %'
-                ];
-            } else if(filename === 'contact.csv'){
-              modifiedHeaders = [];
-            }
-            else
-            {
-                // Use existing column names
-                modifiedHeaders = [
-                    'Serial No',
-                    'Merit No',
-                    'Application ID',
-                    "Candidate's Full Name",
-                    'Merit Exam',
-                    'Category',
-                    'Gender',
-                    'PWD / Def',
-                    'EWS',
-                    'TFWS',
-                    'Orphan',
-                    'Minority Type (LM/RM)',
-                    'Percentile/Mark',
-                    'MHT-CET Math Percentile',
-                    'MHT-CET Physics Percentile',
-                    'MHT-CET Chemistry Percentile',
-                    'HSC PCM %',
-                    'HSC Math %',
-                    'HSC Physics %',
-                    'HSC / Diploma / D.Voc. Total %',
-                    'SSC Total %',
-                    'SSC Math %',
-                    'SSC Science %',
-                    'SSC English %'
-                ];
-            }
+                const csvRows = data.split(/\r?\n|\r/);
 
-            const tableHeaderRow = document.createElement('tr');
-            modifiedHeaders.forEach(header => {
-                const tableHeaderCell = document.createElement('th');
-                tableHeaderCell.textContent = header;
-                tableHeaderRow.appendChild(tableHeaderCell);
-            });
-            table.appendChild(tableHeaderRow);
+                // Create table headers based on the selected CSV file
+                let modifiedHeaders;
+                if (filename === 'jee.csv') {
+                    modifiedHeaders = [
+                        'Merit No',
+                        'Application ID',
+                        "Candidate's Full Name",
+                        'Merit Exam',
+                        'Percentile/Mark',
+                        'JEE Math Percentile',
+                        'JEE Physics Percentile',
+                        'JEE Chemistry Percentile',
+                        'MHT-CET PCM Total Percentile',
+                        'MHT-CET Math Percentile',
+                        'MHT-CET Physics Percentile',
+                        'MHT-CET Chemistry Percentile',
+                        'HSC PCM %',
+                        'HSC Math %',
+                        'HSC Physics %',
+                        'HSC / Diploma / D. Voc. Total %',
+                        'SSC Total %',
+                        'SSC Math %',
+                        'SSC Science %',
+                        'SSC English %'
+                    ];
+                } else if(filename === 'contact.csv'){
+                  modifiedHeaders = [];
+                }
+                else
+                {
+                    // Use existing column names
+                    modifiedHeaders = [
+                        'Merit No',
+                        'Application ID',
+                        "Candidate's Full Name",
+                        'Merit Exam',
+                        'Category',
+                        'Gender',
+                        'PWD / Def',
+                        'EWS',
+                        'TFWS',
+                        'Orphan',
+                        'Minority Type (LM/RM)',
+                        'Percentile/Mark',
+                        'MHT-CET Math Percentile',
+                        'MHT-CET Physics Percentile',
+                        'MHT-CET Chemistry Percentile',
+                        'HSC PCM %',
+                        'HSC Math %',
+                        'HSC Physics %',
+                        'HSC / Diploma / D.Voc. Total %',
+                        'SSC Total %',
+                        'SSC Math %',
+                        'SSC Science %',
+                        'SSC English %'
+                    ];
+                }
 
-            // Add data rows with serial numbers
-            for (let i = 0; i < csvRows.length; i++) 
-            {
-                const csvData = csvRows[i].split(',');
-                if (csvData.length > 0) {
-                    const tableDataRow = document.createElement('tr');
-                    
-                    // Special handling for the first row to include it in the table
-                    if (i === 0) {
-                        const tableDataCell = document.createElement('td');
-                        tableDataCell.textContent = csvData[-1]; // Serial number
-                        tableDataRow.appendChild(tableDataCell);
-                        // Skip the first element (serial number) when adding other cells
-                        for (let j = 0; j < csvData.length; j++) {
-                            const tableDataCell = document.createElement('td');
-                            tableDataCell.textContent = csvData[j];
-                            tableDataRow.appendChild(tableDataCell);
-                        }
-                    } else {
-                        // Add remaining data columns for other rows
+                const tableHeaderRow = document.createElement('tr');
+                modifiedHeaders.forEach(header => {
+                    const tableHeaderCell = document.createElement('th');
+                    tableHeaderCell.textContent = header;
+                    tableHeaderRow.appendChild(tableHeaderCell);
+                });
+                table.appendChild(tableHeaderRow);
+
+                // Add data rows without serial numbers
+                for (let i = 1; i < csvRows.length; i++) // Start loop from index 1 to skip header
+                {
+                    const csvData = csvRows[i].split(',');
+                    if (csvData.length > 0 && csvData[0].trim() !== '') {
+                        const tableDataRow = document.createElement('tr');
                         csvData.forEach(value => {
                             const tableDataCell = document.createElement('td');
                             tableDataCell.textContent = value;
                             tableDataRow.appendChild(tableDataCell);
                         });
+                        table.appendChild(tableDataRow);
                     }
-
-                    table.appendChild(tableDataRow);
                 }
-            }
 
-            document.getElementById('csv-content').style.display = 'block';
+                document.getElementById('csv-content').style.display = 'block';
 
-            const card = document.querySelector('.card');
-            const tableWidth = table.offsetWidth;
-            const newCardWidth = tableWidth + 80; // Add extra padding
-            card.style.width = `${newCardWidth}px`;
-            card.style.left = `calc(50% - ${newCardWidth / 2}px)`;
+                const card = document.querySelector('.card');
+                const tableWidth = table.offsetWidth;
+                const newCardWidth = tableWidth + 80; // Add extra padding
+                card.style.width = `${newCardWidth}px`;
+                card.style.left = `calc(50% - ${newCardWidth / 2}px)`;
 
-            const header = document.querySelector('.header');
-            header.style.width = ''; // Reset to default value
-        });
-}
+                const header = document.querySelector('.header');
+                header.style.width = ''; // Reset to default value
+            });
+    }
 
-
-
-function add_serial_number(data, filename) {
-    // Split the data into rows
-    const rows = data.split('\n');
-
-    // If the filename is 'jee.csv', add serial numbers starting from 1
-    if (filename === 'jee.csv') {
-        for (let i = 0; i < rows.length; i++) {
-            rows[i] = (i + 1) + ',' + rows[i];
+    document.getElementById('view-button').addEventListener('click', function() {
+        var selectedCSV = document.getElementById('merit_list').value;
+        if (selectedCSV) {
+            showCSVContent(selectedCSV);
+        } else {
+            alert('Please select a CSV file first.');
         }
-    } else {
-        // For other files, add serial numbers starting from 2
-        for (let i = 1; i < rows.length; i++) {
-            rows[i] = (i) + ',' + rows[i];
+    });
+
+    document.getElementById('download-button').addEventListener('click', function() {
+        var selectedCSV = document.getElementById('merit_list').value;
+        if (selectedCSV) {
+            window.location.href = `/download_csv/${selectedCSV}`;
+        } else {
+            alert('Please select a CSV file first.');
         }
-    }
+    });
 
-    // Join the rows back into a single string and return
-    return rows.join('\n');
-}
+</script>
 
-
-document.getElementById('view-button').addEventListener('click', function() {
-    var selectedCSV = document.getElementById('merit_list').value;
-    if (selectedCSV) {
-        showCSVContent(selectedCSV);
-    } else {
-        alert('Please select a CSV file first.');
-    }
-});
-
-document.getElementById('download-button').addEventListener('click', function() {
-    var selectedCSV = document.getElementById('merit_list').value;
-    if (selectedCSV) {
-        window.location.href = `/download_csv/${selectedCSV}`;
-    } else {
-        alert('Please select a CSV file first.');
-    }
-});
-
-  </script>
 
 </body>
 </html>
