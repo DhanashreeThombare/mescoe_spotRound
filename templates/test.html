@@ -273,7 +273,7 @@
     document.getElementById('download-all-pdf').addEventListener('click', function() {
         window.location.href = '/download_all_pdfs';
     });
-
+	
     function showCSVContent(filename) {
         fetch(`/view_csv/${filename}`)
             .then(response => response.text())

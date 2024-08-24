@@ -15,113 +15,172 @@
       height: 100vh;
       margin: 0;
     }
+/* Header section with logo and text */
+.header {
+  display: flex;
+  align-items: center; /* Aligns vertically */
+  justify-content: space-between; /* Aligns horizontally with space between logo and text */
+  padding: 10px 20px; /* Optional padding */
+  width: 100%;
+  background-color: #001f3f; /* Dark blue background color */
+  border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
+  animation: slideDown 2s forwards; /* Animation for sliding down the header */
+}
 
-    /* Header section with logo and text */
-    .header {
-      display: flex;
-      align-items: center; /* Aligns vertically */
-      justify-content: center; /* Aligns horizontally */
-      padding: 10px 20px; /* Optional padding */
-      width: 100%;
-      background-color: #001f3f; /* Dark blue background color */
-      border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
-      animation: slideDown 2s forwards; /* Animation for sliding down the header */
-    }
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+.logo-container {
+  display: flex;
+  align-items: center; /* Aligns logo and text vertically */
+  margin-left: 20px;
+}
 
-    .logo-container {
-      display: flex;
-      align-items: center; /* Aligns logo and text vertically */
-      margin-left: 20px;
-    }
+.logo {
+  width: 120px; /* Adjust the width to make the logo smaller */
+  height: auto;
+  max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
+  background-size: cover;
+  background-position: center;
+  cursor: pointer; /* Make the logo clickable */
+}
 
-    .logo {
-      width: 120px; /* Adjust the width to make the logo smaller */
-      height: auto;
-      max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
-      background-size: cover;
-      background-position: center;
-      cursor: pointer; /* Make the logo clickable */
-    }
+.logo img {
+  width: 100%; /* Make the image fill the container */
+  height: auto; /* Maintain aspect ratio */
+}
 
-    .logo img {
-      width: 100%; /* Make the image fill the container */
-      height: auto; /* Maintain aspect ratio */
-    }
+.logo-text {
+  font-size: 25px;
+  text-align: center;
+  color: #fff; /* White text color */
+  line-height: 1.5;
+  margin-left: 20px;
+  cursor: pointer; /* Make the text clickable */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s ease; /* Add transition effect for color change */
+}
 
-    .logo-text {
-      font-size: 25px;
-      text-align: center;
-      color: #fff; /* White text color */
-      line-height: 1.5;
-      margin-left: 20px;
-      cursor: pointer; /* Make the text clickable */
-      text-decoration: none; /* Remove underline */
-      transition: color 0.3s ease; /* Add transition effect for color change */
-    }
+.logo-text:hover {
+  color: #ccc; /* Change text color on hover */
+}
 
-    .logo-text:hover {
-      color: #ccc; /* Change text color on hover */
-    }
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Stack logo and text vertically */
+    justify-content: center;
+    text-align: center; /* Center the content */
+    padding: 15px 10px; /* Adjust padding */
+  }
 
-    .form-container {
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      display: flex;
-      justify-content: center;
-      width: 50%;
-      margin-top: 5%;
-    }
+  .logo-container {
+    margin-left: 0;
+    margin-bottom: 10px; /* Add space between logo and text */
+  }
 
-    .card {
-      background-color: white;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      animation: slideIn 2s forwards;
-      width: 100%;
-      margin-top: 5%;
-    }
+  .logo {
+    width: 100px; /* Reduce logo size on smaller screens */
+    max-height: 100px;
+  }
+
+  .logo-text {
+    font-size: 20px; /* Adjust text size for smaller screens */
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 5px; /* Further reduce padding */
+  }
+
+  .logo {
+    width: 80px; /* Further reduce logo size */
+    max-height: 80px;
+  }
+
+  .logo-text {
+    font-size: 10px; /* Further adjust text size */
+  }
+}
+.form-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  margin-top: 5%;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: slideIn 2s forwards;
+  width: 100%;
+  margin-top: 5%;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    width: 80%; /* Increase the width for smaller screens */
+    padding: 30px; /* Reduce padding */
+  }
+
+  .card {
+    width: 100%; /* Make the card take full width */
+    padding: 20px; /* Reduce padding for better fit on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    width: 95%; /* Further increase the width for very small screens */
+    padding: 20px; /* Further reduce padding */
+  }
+
+  .card {
+    width: 100%; /* Keep the card full width */
+    padding: 15px; /* Further reduce padding */
+  }
+}
 
     .form-title {
-      color: #007BFF;
-      text-align: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      font-size: 35px;
-      position: relative;
-    }
+  color: #007BFF;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 35px;
+}
 
-    .form-title::after,
-    .form-title::before {
-      content: '';
-      display: block;
-      width: 200px;
-      height: 2px;
-      background-color: #007BFF;
-      position: absolute;
-      top: 50%;
-    }
+@media (max-width: 768px) {
+  .form-title {
+    font-size: 28px; /* Smaller font size for tablets */
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
 
-    .form-title::before {
-      left: -10px;
-    }
+@media (max-width: 480px) {
+  .form-title {
+    font-size: 24px; /* Smaller font size for mobile devices */
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
 
-    .form-title::after {
-      right: -10px;
-    }
 
     .form-group {
       margin-bottom: 20px;
@@ -160,7 +219,7 @@
     .form-group input:focus {
       border-bottom: 1px solid blue;
     }
-
+    
     .required {
       color: red;
     }
@@ -213,21 +272,29 @@
       cursor: pointer;
       width: 100%;
     }
+    .otp-btn {
+  background-color: #007BFF;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 20%;
+  margin-left: 40px;
+}
 
-    .otp-btn,button:hover {
-      background-color: #0056b3;
-    }
-    .otp-btn{
-      background-color: #007BFF;
-      color: #ffffff;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 20%;
-      margin-left:40px;
-    }
+.otp-btn, button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .otp-btn {
+    width: 100%; /* Make the button full width on small screens */
+    margin-left: 0; /* Remove left margin on small screens */
+  }
+}
+
     .form-footer {
       background-color: #001f3f; /* Same color as header */
       color: #fff;
@@ -307,38 +374,53 @@
         transform: translateY(0);
       }
     }
-
     /* Instruction Box Styles */
-    .instruction-box {
-      background-color: white; /* Light yellow background */
-      border: 1px solid black; /* Darker yellow border */
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-      margin: 20px;
-      animation: slideInInstruction 1.5s forwards; /* Animation for sliding in the instruction box */
-    }
+.instruction-box {
+  background-color: white; /* White background */
+  border: 1px solid black; /* Black border */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 20px;
+  animation: slideInInstruction 1.5s forwards; /* Animation for sliding in the instruction box */
+}
 
-    @keyframes slideInInstruction {
-      from {
-        transform: translateY(-20%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+@keyframes slideInInstruction {
+  from {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    @media (max-width: 768px) {
-      .instruction-box {
-        margin: 10px;
-        padding: 15px;
-      }
-      .modal-content {
-        width: 80%; /* Make the modal content wider on smaller screens */
-      }
-    }
+.instruction-box p {
+  color: red;
+  text-align: left;
+  font-size: 15px; /* Default font size */
+}
+
+@media (max-width: 768px) {
+  .instruction-box {
+    margin: 10px; /* Reduce margin on smaller screens */
+    padding: 15px; /* Reduce padding on smaller screens */
+  }
+  .instruction-box p {
+    font-size: 13px; /* Smaller font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .instruction-box {
+    margin: 5px; /* Further reduce margin on very small screens */
+    padding: 10px; /* Further reduce padding on very small screens */
+  }
+  .instruction-box p {
+    font-size: 12px; /* Even smaller font size for very small screens */
+  }
+}
 
 .popup-overlay {
   position: fixed;
@@ -383,75 +465,37 @@
 #close-popup:hover {
   background-color: #0056b3;
 }
+#note1{
+  color:gray;
+}
+
+
+    .required {
+      color: red;
+    }
+    /* Remove arrows in WebKit browsers (Chrome, Safari, etc.) */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Remove arrows in Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    @media (max-width: 768px) {
+      input[type="email"],
+      input[type="number"] {
+        width: 100%; /* Input takes full width on smaller screens */
+        margin-bottom: 10px; /* Space below input on smaller screens */
+      }
+
+      .otp-btn {
+        width: 100%; /* Button takes full width on smaller screens */
+      }
+    }
   </style>
-  <script>
-    function validateForm() {
-      var mobile = document.getElementById('mobile').value;
-      var email = document.getElementById('email').value;
-
-
-      // Phone number validation
-      var phonePattern = /^\d{10}$/;
-      if (!mobile.match(phonePattern)) {
-        alert("Please enter a valid 10-digit phone number.");
-        return false;
-      }
-
-      // Email validation
-      var emailPattern = /^\S+@\S+\.\S+$/;
-      if (!email.match(emailPattern)) {
-        alert("Please enter a valid email address.");
-        return false;
-      }
-
-      // Check if the file name matches the query
-      const query = document.getElementById('query').value;
-      const fileInput = document.getElementById('file');
-      if (fileInput.files.length > 0) {
-        const fileName = fileInput.files[0].name;
-        if (!fileName.includes(query)) {
-          alert(`The uploaded file name (${fileName}) does not match the Application ID (${query}).`);
-          return false;
-        }
-      }
-
-    const checkboxes = document.querySelectorAll('input[name="department"]:checked');
-    const selectedDepartments = [];
-    checkboxes.forEach((checkbox) => {
-        selectedDepartments.push(checkbox.value);
-    });
-
-    document.getElementById('departments').value = selectedDepartments.join(', ');
-      return true;
-    }
-
-    function capitalizeInput(fieldId) {
-      var fieldValue = document.getElementById(fieldId).value;
-      document.getElementById(fieldId).value = fieldValue.toUpperCase();
-    }
-
-    function showAlert() {
-      const modal = document.getElementById('dataNotFoundModal');
-      modal.style.display = 'block';
-    }
-
-    function closeAlert() {
-      const modal = document.getElementById('dataNotFoundModal');
-      modal.style.display = 'none';
-      // Reset the form
-      document.getElementById('searchForm').reset();
-    }
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const instructionBox = document.getElementById('instructionBox');
-      instructionBox.style.display = 'block';
-    });
-
-    function closeInstructionBox() {
-      const instructionBox = document.getElementById('instructionBox');
-      instructionBox.style.display = 'none';
-    }
-  </script>
 
 </head>
 <body>
@@ -467,35 +511,47 @@
   </header>
 
   <div id="instructionBox" class="instruction-box" style="display: none;">
-    <span class="close" onclick="closeInstructionBox()" style="float: right; cursor: pointer;">&times;</span>
-    <p style="color:red;text-align:left;font-size:15px"><b>Instructions :</b> <br>
-	  1. Input your name as per your Admit card. 
-		(e.g. Name as per admit card : QWERTY ASDFGH ZXCVBN then, 
-     <b> First Name : QWERTY , Middle Name : ASDFGH , Last Name : ZXCVBN)</b><br>
-     (तुमच्या प्रवेशपत्रानुसार तुमचे नाव भरा. (उदाहरणार्थ, प्रवेशपत्रानुसार नाव : QWERTY ASDFGH ZXCVBN, तर पहिले नाव : QWERTY, मधले नाव : ASDFGH, शेवटचे नाव : ZXCVBN असे भरा))<br>
-	  2. Do not use spaces while entering the Application ID and name.<br>
-    (अर्ज क्रमांक आणि नाव भरताना रिकाम्या जागांचा वापर करू नका.)<br>
-	  3. The file size should be less than or equal to 1 MB.<br>
-    (फाइलचा आकार 1 MB किंवा त्यापेक्षा कमी असावा.)<br>
-    4. Rename your Allocation letter as Application ID before uploading (eg.ENXXXXXXXX.pdf)<br>
-    (अपलोड करण्यापूर्वी तुमच्या अर्ज क्रमांकानुसार नियुक्ती पत्राचे नाव बदला (उदाहरणार्थ ENXXXXXXXX.pdf).)<br>
-    5. Candidate having long name containing more then three name insert only first three name.
-    (e.g. Name as per admit card : ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD then,
-    <br><b>   First Name : ASDFGHJ , Middle Name : POIUYTR , Last Name : QWERTY</b>)<br>
-    (ज्या उमेदवाराचे नाव तीनपेक्षा जास्त शब्दांचे आहे त्यांनी फक्त पहिले तीनच शब्द भरावेत. (उदाहरणार्थ, प्रवेशपत्रानुसार नाव : ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD, तर पहिले नाव : ASDFGHJ, मधले नाव : POIUYTR, शेवटचे नाव : QWERTY असे भरा))<br>
+    <p>
+      <b>Instructions :</b><br>
+      1. Input your name as per your Admit card. 
+      (e.g. Name as per admit card: QWERTY ASDFGH ZXCVBN then, 
+      <b>First Name: QWERTY, Middle Name: ASDFGH, Last Name: ZXCVBN)</b><br>
+      (तुमच्या प्रवेशपत्रानुसार तुमचे नाव भरा. (उदाहरणार्थ, प्रवेशपत्रानुसार नाव: QWERTY ASDFGH ZXCVBN, तर पहिले नाव: QWERTY, मधले नाव: ASDFGH, शेवटचे नाव: ZXCVBN असे भरा))<br>
+      2. Do not use spaces while entering the Application ID and name.<br>
+      (अर्ज क्रमांक आणि नाव भरताना रिकाम्या जागांचा वापर करू नका.)<br>
+      3. The file size should be less than or equal to 1 MB.<br>
+      (फाइलचा आकार 1 MB किंवा त्यापेक्षा कमी असावा.)<br>
+      4. Candidate having long name containing more than three names should insert the name as shown below.
+      (e.g. Name as per admit card: ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD then,
+      <br><b>First Name: ASDFGHJ, Middle Name: POIUYTR, Last Name: QWERTY MNBVC KJHGFD</b>)<br>
+      (उमेदवाराचे नाव तीन पेक्षा जास्त शब्दांचे असल्यास, खालीलप्रमाणे नाव प्रविष्ट करावे. उदा. प्रवेशपत्रानुसार नाव: ASDFGHJ POIUYTR QWERTY MNBVC KJHGFD, तर प्रथम नाव: ASDFGHJ, मधले नाव: POIUYTR, शेवटचे नाव: QWERTY MNBVC KJHGFD))<br>
     </p>
   </div>
-
+  
   <div class="form-container">
     <div class="card">
         <form id="applicationForm" action="/search" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
             <h1 class="form-title">Application Form</h1>
+
+    <div class="form-group">
+      <label for="email">Email <span class="required">*</span></label>
+      <input type="email" id="email" name="email" required>   
+
+      <button class="otp-btn" type="button" onclick="sendOTP()">Send OTP</button>
+  </div>
+  <div id="otpField" class="form-group" style="display: none;">
+      <label for="otp">OTP <span class="required">*</span></label>
+      <input type="number" id="otp" name="otp" required>
+      <button class="otp-btn" type="button" onclick="verifyOTP()">Verify OTP</button>
+  </div>
+
+<div id="remainingForm" style="display: none;">
             <div class="form-group">
-                <label for="query">Application ID <span class="required">*</span></label>
+                <label for="query">Application ID <label style="font-size: small; color: gray;">(Application ID should start with EN24 e.g. EN24XXXXXXX)</label><span class="required">*</span></label>
                 <input type="text" id="query" name="query" required>
             </div>
             <div class="form-group">
-                <label for="fullName">Full name <span class="required">*</span></label>
+                <label for="fullName">Full name  <label style="font-size: small; color: gray;">(Name as per Allotment Letter)</label><span class="required">*</span></label>
                 <div class="name-fields">
                     <input type="text" id="first_name" name="first_name" placeholder="First Name" onkeyup="capitalizeInput('first_name')" required>
                     <input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" onkeyup="capitalizeInput('middle_name')">
@@ -503,7 +559,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>What department are you interested in? <span class="required">*</span></label>
+                <label>What department are you interested in? <label style="font-size: small; color: gray;">(You can select multiple department)</label><span class="required">*</span></label>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="department" value="Computer Engineering"> Computer Engineering</label>
                     <label><input type="checkbox" name="department" value="E & TC Engineering"> E & TC Engineering</label>
@@ -513,24 +569,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="mobile">Contact number <span class="required">*</span></label>
+                <label for="mobile">Registered Mobile Number <span class="required">*</span></label>
                 <input type="text" id="mobile" name="mobile" required>
             </div>
             <div class="form-group">
-                <label for="email">Email <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required>
-                <button class="otp-btn" type="button" onclick="sendOTP()">Send OTP</button>
-            </div>
+              <label for="mobile1">Alternate Mobile Number <span class="required">*</span></label>
+              <input type="text" id="mobile1" name="mobile1" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Residential Address: <span class="required">*</span></label>
+            <input type="text" id="address" name="address" required>
+        </div>
             <div class="form-group">
-                <label for="otp">OTP <span class="required">*</span></label>
-                <input type="number" id="otp" name="otp" required>
-                <button class="otp-btn" type="button" onclick="verifyOTP()" required>Verify OTP</button>
-            </div>
-            <div class="form-group">
-                <label for="file">Upload Allotment Letter (Rename your file as your Application ID) <span class="required">*</span></label>
+                <label for="file">Upload Allotment Letter <label style="font-size: small; color: gray;">(File size should less than 1MB)</label><span class="required">*</span></label>
                 <input type="file" id="file" name="file" required>
             </div>
-            <button type="submit">Next</button>
+            <button type="submit">Submit</button>
         </form>
         {% if data_not_found %}
             <script>
@@ -540,6 +594,7 @@
             </script>
         {% endif %}
     </div>
+</div>
 </div>
 
   <footer class="form-footer">
@@ -566,8 +621,8 @@
   <div id="popup" class="popup-overlay">
     <div class="popup-content">
       <h2>Instructions</h2>
-      <p>1) If the form reloads after you click the Next button, it could be because you haven't uploaded the file with your ENXXXXXXXX number or you are trying to fill the form more than once.</p>
-      <p> (जर तुम्ही Next बटणावर क्लिक केल्यानंतर फॉर्म पुन्हा लोड होत असेल, तर कारण असू शकते की तुम्ही तुमचा ENXXXXXXXX क्रमांक अपलोड केलेला नाही किंवा तुम्ही फॉर्म एकापेक्षा जास्त वेळा भरत आहात.)</p>
+      <p>1) If the form reloads after you click the Submit button, it could be because you haven't uploaded the file or you are trying to fill the form more than once.</p>
+      <p> (जर तुम्ही सबमिट बटण क्लिक केल्यानंतर फॉर्म रीलोड होत असेल, तर याचा अर्थ तुम्ही फाईल अपलोड केलेली नाही किंवा तुम्ही एकापेक्षा जास्त वेळा फॉर्म भरण्याचा प्रयत्न करत आहात.)</p>
       <p>2) If you receive a confirmation email, your registration is successful.</p>
       <p> (जर तुम्हाला पुष्टीकरण ईमेल मिळाला असेल, तर तुमची नोंदणी यशस्वी झाली आहे.)</p>
       <button id="close-popup">Got it!</button>
@@ -585,42 +640,62 @@
     });
   </script> 
   <script>
-    function sendOTP() {
-        const email = document.getElementById('email').value;
-        fetch('/send_otp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-        })
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => console.error('Error:', error));
-    }
+function sendOTP() {
+    const email = document.getElementById('email').value;
+    fetch('/send_otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            document.getElementById('otpField').style.display = 'block';
+                    }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while sending OTP.');
+    });
+}
 
-    function verifyOTP() {
-        const otp = document.getElementById('otp').value;
-        fetch('/verify_otp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ otp }),
-        })
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => console.error('Error:', error));
-    }
-
-    function validateForm() {
+function verifyOTP() {
+    const otp = document.getElementById('otp').value;
+    fetch('/verify_otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ otp }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            document.getElementById('remainingForm').style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while verifying OTP.');
+    });
+}
+function validateForm() {
         const mobile = document.getElementById('mobile').value;
+        const mobile1 = document.getElementById('mobile1').value;
         const email = document.getElementById('email').value;
 
         // Phone number validation
-        const phonePattern = /^\d{10}$/;
+        const phonePattern = /^[6-9]\d{9}$/;
         if (!mobile.match(phonePattern)) {
-            alert("Please enter a valid 10-digit phone number.");
+            alert("Please enter a valid 10-digit phone number that starts with,6,7,8 or 9");
+            return false;
+        }
+        if (!mobile1.match(phonePattern)) {
+            alert("Please enter a valid 10-digit phone number that starts with,6,7,8 or 9");
             return false;
         }
 

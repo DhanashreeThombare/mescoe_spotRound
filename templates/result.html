@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Search Results</title>
+  
   <style>
     /* Global styles */
     body {
@@ -11,6 +12,23 @@
       overflow-x: hidden; /* Prevent horizontal scrolling */
       background-color: whitesmoke; /* Background color */
       text-align: center; /* Center align text */
+      font-size: 14px; /* Set base font size for the entire page */
+    }
+
+    .header .logo-text {
+      font-size: 20px; /* Reduced header text size */
+    }
+
+    h1, h2, h3, h4 {
+      font-size: 1.5em; /* Reduced heading sizes */
+    }
+
+    p {
+      font-size: 0.9em; /* Reduced paragraph size */
+    }
+
+    .label, input, textarea {
+      font-size: 0.9em; /* Reduced label, input, and textarea sizes */
     }
 
     /* Header section with logo and text */
@@ -21,7 +39,6 @@
       padding: 10px 20px; /* Optional padding */
       position: relative;
       z-index: 2; /* Ensure header stays above other content */
-      
       height: 20%; /* Set height of the header */
       min-height: 100px; /* Set a minimum height for the header */
       max-height: 150px; /* Set a maximum height for the header */
@@ -48,9 +65,9 @@
     }
 
     .logo {
-      width: 120px; /* Adjust the width to make the logo smaller */
+      width: 100px; /* Adjust the width to make the logo smaller */
       height: auto;
-      max-height: 160px; /* Ensure the logo doesn't exceed 100px in height */
+      max-height: 140px; /* Ensure the logo doesn't exceed 100px in height */
       background-size: cover;
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
@@ -62,9 +79,9 @@
     }
 
     .logo-text {
-      font-size: 25px;
+      font-size: 20px; /* Reduced header text size */
       color: #fff; /* White text color */
-      line-height: 1.5;
+      line-height: 1.2;
       margin-left: 20px;
       text-align: center;
       cursor: pointer; /* Make the text clickable */
@@ -75,35 +92,87 @@
     .logo-text:hover {
       color: #ccc; /* Change text color on hover */
     }
-
-    /* Rest of your styles remain the same */
+    .card {
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      animation: slideIn 2s forwards;
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      align-items: left;
+      text-align: left;
+      font-size: 1.1em; /* Increase font size for readability */
+    }
+    
     .container {
       position: relative;
-      height: auto; /* Set height of the container to occupy the remaining viewport height */
-      min-height: 200px; /* Set a minimum height for the container */
+      height: auto;
+      min-height: 200px;
       display: flex;
       justify-content: center;
-      align-items: left;
-     
+      flex-wrap: wrap; /* Allow wrapping of elements inside the container */
+      gap: 20px; /* Space between cards */
     }
-
+    
     .result-container {
       margin: 40px;
     }
-
-    .card {
-      background-color: white; /* Lighter yellow background color */
-      border-radius: 20px;
-      padding: 20px; /* Increase padding */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add shadow */
-      animation: slideIn 2s forwards; /* Animation for sliding in the card */
-      width: 100%; /* Set card width */
-      max-width: 700px; /* Set maximum card width */
-      height: auto; /* Set height to auto */
-      align-items: left;
-      text-align:left;
+    
+    /* Form group style */
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+      width: 80%;
+      max-width: 600px;
+      margin: 0 auto;
     }
-
+    
+    label {
+      font-weight: bold;
+      font-size: 1em; /* Increase label size */
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .card {
+        max-width: 100%; /* Allow cards to take full width on smaller screens */
+        font-size: 1.2em; /* Further increase font size on smaller screens */
+      }
+      
+      .container {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center the cards */
+      }
+    }
+    .card1 {
+      margin-top: 40px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      animation: slideIn 2s forwards;
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      text-align: left;
+      font-size: 1.1em; /* Adjusted font size for better readability */
+      margin-left: auto; /* Center the card horizontally */
+      margin-right: auto; /* Center the card horizontally */
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .card1 {
+        padding: 20px; /* Reduce padding for smaller screens */
+        font-size: 1.2em; /* Increase font size slightly for better readability */
+        max-width: 90%; /* Reduce max width to fit better on smaller screens */
+        margin-left: 5%; /* Center the card with smaller margins */
+        margin-right: 5%; /* Center the card with smaller margins */
+      }
+    }
+    
     @keyframes slideIn {
       from {
         transform: translateY(-50%);
@@ -116,22 +185,11 @@
     }
 
     /* Apply the same styling to form elements */
-    form {
-      margin-top: 30px;
-      padding-top: 30px;
-      text-align: center;
-    }
-
-    label {
-      font-weight: bold;
-    }
-
-    input[type="text"] {
-      padding: 8px;
-      margin: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      background-color: #e8e8e8;
+    /* Center the button below the checkbox */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px; /* Adjust margin as needed */
     }
 
     button {
@@ -161,38 +219,58 @@
       margin-right: 10px;
     }
 
-/* Responsive layout */
-@media (max-width: 768px) {
-  .logo-container {
-    margin-left: 10px;
-  }
 
-  .logo-text {
-    margin-left: 10px;
-  }
+    input[type="text"],
+    textarea {
+      padding: 8px;
+      padding-right: 10px;
+      margin-top: 5px;
+      margin-right:20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #e8e8e8;
+      width: 95%; /* Make inputs and textareas responsive */
+      font-size: 0.9em; /* Reduced input and textarea text size */
+    }
 
-  .result-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    textarea {
+      height: 100px; /* Set a fixed height for the comment box */
+      resize: vertical; /* Allow vertical resizing */
+    }
 
-  .result-heading {
-    margin-top: 40px;
-  }
+    /* Responsive layout */
+    @media (max-width: 768px) {
+      .logo-container {
+        margin-left: 10px;
+      }
 
-  .result-container .card {
-    margin-top: 20px;
-    width: 100%; /* Set card width to full width on smaller screens */
-    max-width: 500px; /* Limit maximum card width */
-  }
-}
+      .logo-text {
+        margin-left: 10px;
+      }
 
-#note{
+      .result-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .result-heading {
+        margin-top: 40px;
+      }
+
+      .result-container .card {
+        margin-top: 20px;
+        width: 100%; /* Set card width to full width on smaller screens */
+        max-width: 500px; /* Limit maximum card width */
+      }
+    }
+
+    #note {
       font-size: small;
     }
-/* Footer */
-.footer {
+
+    /* Footer */
+    .footer {
       position: relative;
       background-color: #001f3f; /* Same color as header */
       color: #fff;
@@ -200,7 +278,9 @@
       padding: 10px;
       border-radius: 20px 20px 0 0; /* Only top edges rounded */
       margin-top: 20px; /* Add space between card and footer */
+      font-size: 0.8em; /* Reduced footer text size */
     }
+
   </style>
 </head>
 <body>
@@ -284,26 +364,32 @@
         </div>
       {% endif %}
     </div>
-    
+    <p style="font-size: medium; color: grey;">All the details are fetched from MHT-CET official merit list</p>
     <form action="{{ url_for('submit') }}" method="post">
-      <div class="checkbox-container">
-        <input type="checkbox" id="verification" required>
-        <label for="verification">All details are verified by the candidate</label>
+      <div class="card1">
+        <!-- Comment Box -->
+        <center><b>Fill this small form for any incorrect information only.</b></center><br>
+        <div class="form-group">
+            <label for="application_id">Application ID :</label>
+            <input type="text" name="application_id" placeholder="Application ID">
+        </div>
+        <div class="form-group">
+            <label for="name">Name :</label>
+            <input type="text" name="name" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+            <label for="comment">Comment (optional):</label>
+            <textarea id="comment" name="comment" placeholder="If any discrepancies about data please mention here"></textarea>
+        </div>
+    </div>
+      <div class="button-container">
+          <button type="submit">Confirm</button>
       </div>
-      <br>
-      <!--<label for="email">Email:</label>
-      <input type="email" id="email" name="email" required><br>
-      <br>-->
-      
-        <button type="submit">Submit</button>
-      
-      <br>
-      <p id="note" style="color: red;"><b>NOTE : If shown details are not correct please contact the college</b></p>
-    </form>
+  </form>
   {% else %}
     <p>No results found matching the details entered.</p>
   {% endif %}
-
+  
   <footer class="footer">
     <div>
       <h3>CONTACT US</h3>

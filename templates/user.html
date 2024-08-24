@@ -13,19 +13,18 @@
       padding: 0;
       overflow-x: hidden; /* Prevent horizontal scrolling */
     }
-
     /* Header section with logo and text */
     .header {
       display: flex;
       align-items: center; /* Aligns vertically */
-      justify-content: center; /* Aligns horizontally */
+      justify-content: space-between; /* Aligns horizontally with space between logo and text */
       padding: 10px 20px; /* Optional padding */
       width: 100%;
       background-color: #001f3f; /* Dark blue background color */
       border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
       animation: slideDown 2s forwards; /* Animation for sliding down the header */
     }
-
+    
     @keyframes slideDown {
       from {
         transform: translateY(-100%);
@@ -36,13 +35,13 @@
         opacity: 1;
       }
     }
-
+    
     .logo-container {
       display: flex;
       align-items: center; /* Aligns logo and text vertically */
       margin-left: 20px;
     }
-
+    
     .logo {
       width: 120px; /* Adjust the width to make the logo smaller */
       height: auto;
@@ -51,12 +50,12 @@
       background-position: center;
       cursor: pointer; /* Make the logo clickable */
     }
-
+    
     .logo img {
       width: 100%; /* Make the image fill the container */
       height: auto; /* Maintain aspect ratio */
     }
-
+    
     .logo-text {
       font-size: 25px;
       text-align: center;
@@ -67,20 +66,59 @@
       text-decoration: none; /* Remove underline */
       transition: color 0.3s ease; /* Add transition effect for color change */
     }
-
+    
     .logo-text:hover {
       color: #ccc; /* Change text color on hover */
     }
-
-    /* Rest of your styles remain the same: */
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column; /* Stack logo and text vertically */
+        justify-content: center;
+        text-align: center; /* Center the content */
+        padding: 15px 10px; /* Adjust padding */
+      }
+    
+      .logo-container {
+        margin-left: 0;
+        margin-bottom: 10px; /* Add space between logo and text */
+      }
+    
+      .logo {
+        width: 100px; /* Reduce logo size on smaller screens */
+        max-height: 100px;
+      }
+    
+      .logo-text {
+        font-size: 20px; /* Adjust text size for smaller screens */
+        margin-left: 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header {
+        padding: 10px 5px; /* Further reduce padding */
+      }
+    
+      .logo {
+        width: 80px; /* Further reduce logo size */
+        max-height: 80px;
+      }
+    
+      .logo-text {
+        font-size: 10px; /* Further adjust text size */
+      }
+    }
     h1.title {
-      margin: 20px 0; /* Adjust top margin */
+      margin: 20px 0;
       color: #333;
       font-weight: bold;
       text-align: center;
-      animation: slideFromRight 1.5s forwards; /* Animation for sliding from right */
+      animation: slideFromRight 1.5s forwards;
+      font-size: 2em; /* Responsive font size */
     }
-
+    
     @keyframes slideFromRight {
       from {
         transform: translateX(100%);
@@ -91,12 +129,12 @@
         opacity: 1;
       }
     }
-
+    
     .button-container {
       text-align: center;
-      animation: slideFromLeft 1.5s forwards; /* Animation for sliding from left */
+      animation: slideFromLeft 1.5s forwards;
     }
-
+    
     @keyframes slideFromLeft {
       from {
         transform: translateX(-100%);
@@ -107,28 +145,48 @@
         opacity: 1;
       }
     }
-
+    
     .container {
       position: relative;
-      height: 80%; /* Set height of the container to occupy the remaining viewport height */
-      min-height: calc(100vh - 150px); /* Set a minimum height for the container */
-      max-height: calc(100vh - 100px); /* Set a maximum height for the container */
+      height: 80%;
+      min-height: calc(100vh - 150px);
+      max-height: calc(100vh - 100px);
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Hide any overflowing content */
+      overflow: hidden;
+      padding: 20px; /* Added padding for smaller screens */
     }
-
+    
     .card {
-      background-color: white; /* Lighter yellow background color */
+      background-color: white;
       border-radius: 20px;
-      padding: 40px; /* Increase padding */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow */
-      animation: slideIn 2s forwards; /* Animation for sliding in the card */
-      width: 80%; /* Set card width */
-      max-width: 500px; /* Set maximum card width */
+      padding: 40px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      animation: slideIn 2s forwards;
+      width: 80%;
+      max-width: 500px;
+      font-size: 1.1em; /* Increased font size for readability */
     }
-
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      h1.title {
+        font-size: 1.8em; /* Slightly reduced font size for smaller screens */
+      }
+    
+      .container {
+        padding: 10px; /* Reduce padding on smaller screens */
+        max-height: none; /* Allow the container to grow as needed on smaller screens */
+      }
+    
+      .card {
+        padding: 20px; /* Reduce padding on smaller screens */
+        max-width: 80%; /* Allow the card to take up more width on smaller screens */
+        font-size: 1.2em; /* Further increased font size for readability */
+      }
+    }
+    
     @keyframes slideIn {
       from {
         transform: translateY(-50%);
@@ -139,6 +197,7 @@
         opacity: 1;
       }
     }
+    
 
     button {
       padding: 15px 30px; /* Increase button padding */

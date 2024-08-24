@@ -13,69 +13,103 @@
       overflow-x: hidden; /* Prevent horizontal scrolling */
       background-color: #f4f4f4; /* Background color */
     }
+/* Header section with logo and text */
+.header {
+  display: flex;
+  align-items: center; /* Aligns vertically */
+  justify-content: space-between; /* Aligns horizontally with space between logo and text */
+  padding: 10px 20px; /* Optional padding */
+  width: 100%;
+  background-color: #001f3f; /* Dark blue background color */
+  border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
+  animation: slideDown 2s forwards; /* Animation for sliding down the header */
+}
 
-    /* Header section with logo and text */
-    .header {
-      display: flex;
-      align-items: center; /* Aligns vertically */
-      justify-content: center; /* Aligns horizontally */
-      padding: 10px 20px; /* Optional padding */
-      position: relative;
-      z-index: 2; /* Ensure header stays above other content */
-      
-      height: 20%; /* Set height of the header */
-      min-height: 100px; /* Set a minimum height for the header */
-      max-height: 150px; /* Set a maximum height for the header */
-      background-color: #001f3f; /* Dark blue background color */
-      border-radius: 0 0 20px 20px; /* Only bottom edges rounded */
-      animation: slideDown 2s forwards; /* Animation for sliding down the header */
-    }
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    @keyframes slideDown {
-      from {
-        transform: translateY(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+.logo-container {
+  display: flex;
+  align-items: center; /* Aligns logo and text vertically */
+  margin-left: 20px;
+}
 
-    .logo-container {
-      display: flex;
-      align-items: center; /* Aligns logo and text vertically */
-      margin-left: 20px;
-    }
+.logo {
+  width: 120px; /* Adjust the width to make the logo smaller */
+  height: auto;
+  max-height: 160px; /* Ensure the logo doesn't exceed 160px in height */
+  background-size: cover;
+  background-position: center;
+  cursor: pointer; /* Make the logo clickable */
+}
 
-    .logo {
-      width: 80px; /* Adjust the width to make the logo smaller */
-      height: auto;
-      max-height: 100px; /* Ensure the logo doesn't exceed 100px in height */
-      background-size: cover;
-      background-position: center;
-      cursor: pointer; /* Make the logo clickable */
-    }
+.logo img {
+  width: 100%; /* Make the image fill the container */
+  height: auto; /* Maintain aspect ratio */
+}
 
-    .logo img {
-      width: 100%; /* Make the image fill the container */
-      height: auto; /* Maintain aspect ratio */
-    }
+.logo-text {
+  font-size: 25px;
+  text-align: center;
+  color: #fff; /* White text color */
+  line-height: 1.5;
+  margin-left: 20px;
+  cursor: pointer; /* Make the text clickable */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s ease; /* Add transition effect for color change */
+}
 
-    .logo-text {
-      font-size: 14px;
-      color: #fff; /* White text color */
-      line-height: 1.5;
-      margin-left: 20px;
-      cursor: pointer; /* Make the text clickable */
-      text-decoration: none; /* Remove underline */
-      transition: color 0.3s ease; /* Add transition effect for color change */
-    }
+.logo-text:hover {
+  color: #ccc; /* Change text color on hover */
+}
 
-    .logo-text:hover {
-      color: #ccc; /* Change text color on hover */
-    }
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; /* Stack logo and text vertically */
+    justify-content: center;
+    text-align: center; /* Center the content */
+    padding: 15px 10px; /* Adjust padding */
+  }
 
+  .logo-container {
+    margin-left: 0;
+    margin-bottom: 10px; /* Add space between logo and text */
+  }
+
+  .logo {
+    width: 100px; /* Reduce logo size on smaller screens */
+    max-height: 100px;
+  }
+
+  .logo-text {
+    font-size: 20px; /* Adjust text size for smaller screens */
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 5px; /* Further reduce padding */
+  }
+
+  .logo {
+    width: 80px; /* Further reduce logo size */
+    max-height: 80px;
+  }
+
+  .logo-text {
+    font-size: 10px; /* Further adjust text size */
+  }
+}
     /* Rest of your styles remain the same: */
     h1.title {
       margin: 20px 0; /* Adjust top margin */
@@ -243,7 +277,7 @@
       <a href="https://mescoe.mespune.org/" class="logo-text" style="display: flex; align-items: center; color: #fff;">
         <div class="logo">
           <!-- Replace this path with the path to your formal logo image -->
-          <img src="path/to/your/formal_logo.png" alt="Logo">
+          <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
         </div>
         <p class="logo-text">Modern Education Society's Wadia College of Engineering, Pune (Wadia College Campus)<br>Affiliated to SPPU, Approved by AICTE, Accredited by NAAC with 'A++' Grade, Accredited by NBA</p>
       </a>
