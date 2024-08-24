@@ -1,14 +1,44 @@
 import io
 import shutil
 from flask import Flask, flash, render_template, request, redirect, send_file, url_for, send_from_directory, make_response
+from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
+import tabula
+from datetime import datetime, timedelta
 import os
 import csv
+import zipfile
 import tabula
+import PyPDF2
 import pandas as pd
 from io import BytesIO
-
+from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from flask import Flask, request, render_template, jsonify, session, redirect, url_for, flash
+import random
 app = Flask(__name__)
+
+# Configurations for Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'wadia.admission@mescoepune.org'
+app.config['MAIL_PASSWORD'] = 'epwc swxr adti okju'
+app.config['MAIL_DEFAULT_SENDER'] = 'wadia.admission@mescoepune.org'
+
+mail = Mail(app)
+
+@app.route('/results', methods=['POST'])
+def results():
+    # Dummy results for demonstration purposes
+    results_dict = {
+        'cross_checked': True,
+        'jee': [{'key1': 'value1', 'key2': 'value2'}],
+        'cet': [{'Unnamed: 0': 'App ID', 'Unnamed: 1': 'Full Name', 'Unnamed: 2': 'Merit Exam'}]
+    }
+    return render_template('result.html', results_dict=results_dict, cross_checked=True)
 
 # Set the upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -21,17 +51,35 @@ uploaded_files = set()
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'pdf'}
 
-# Function to convert PDF to CSV
-def pdf_to_csv(pdf_path, output_csv):
+def get_total_pages(pdf_path):
+    # Use PyPDF2 to get the total number of pages in the PDF
+    with open(pdf_path, "rb") as file:
+        reader = PyPDF2.PdfReader(file)
+        return len(reader.pages)
+
+def pdf_to_csv(pdf_path, output_csv, batch_size=50):
+    # Get the total number of pages in the PDF
+    total_pages = get_total_pages(pdf_path)
+
     # Initialize an empty list to store DataFrames
     all_dfs = []
 
-    # Read the PDF file in batches
-    for page_num in range(1, 5531, 50):  # Change 50 to an appropriate batch size
-        end_page = min(page_num + 49, 5530)
-        # Read PDF into DataFrame and append to the list
-        df = tabula.read_pdf(pdf_path, pages=f"{page_num}-{end_page}", multiple_tables=True, lattice=True)
-        all_dfs.extend(df)
+    # Set the initial page number
+    page_num = 1
+
+    while page_num <= total_pages:
+        # Calculate the end page for the current batch, ensuring it doesn't exceed the total number of pages
+        end_page = min(page_num + batch_size - 1, total_pages)
+
+        # Read the PDF file in the current batch of pages
+        dfs = tabula.read_pdf(pdf_path, pages=f"{page_num}-{end_page}", multiple_tables=True, lattice=True)
+
+        # If tables were found, add them to the list of DataFrames
+        if dfs:
+            all_dfs.extend(dfs)
+
+        # Increment the page number for the next batch
+        page_num += batch_size
 
     # Concatenate all DataFrames in the list
     all_tables = pd.concat(all_dfs, ignore_index=True)
@@ -129,149 +177,224 @@ def upload_file():
             return render_template('upload.html')
 
         files = [request.files['file1'], request.files['file2']]
+        uploaded_and_converted = True
 
-        for file in files:
+        for idx, file in enumerate(files):
             # If user does not select file, browser also
-            # submit an empty part without filename
+            # submits an empty part without filename
             if file.filename == '':
-                flash('No selected file')
-                return render_template('upload.html')
+                flash(f'No selected file for file {idx+1}')
+                uploaded_and_converted = False
+                break
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 if filename in uploaded_files:
-                    flash('File has already been uploaded and converted')
+                    flash(f'File {filename} has already been uploaded and converted')
+                    uploaded_and_converted = False
                 else:
                     uploaded_files.add(filename)  # Add filename to the set of uploaded files
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
 
                     # Convert uploaded PDF to CSV
-                    output = os.path.join(app.config['UPLOAD_FOLDER'], 'output1.csv' if len(uploaded_files) == 1 else 'output2.csv')
+                    output = os.path.join(app.config['UPLOAD_FOLDER'], f'output{idx+1}.csv')
                     pdf_to_csv(file_path, output)
 
-        # No need to redirect after successful upload, user stays on the page
+        if uploaded_and_converted:
+            flash('Files uploaded and converted successfully!')
         return render_template('upload.html')
     return render_template('upload.html')
+
+
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+def send_email(to_email, otp):
+    from_email = "wadia.admission@mescoepune.org"
+    from_password = "epwc swxr adti okju"  # Use the app password here
+
+    subject = "OTP for MESWCOE Spot Round Registration"
+    body = f"Your OTP code for MESWCOE Spot Round Registration : {otp}."
+
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(from_email, from_password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return False
+
+@app.route('/send_otp', methods=['POST'])
+def send_otp():
+    email = request.json.get('email')
+    otp = random.randint(100000, 999999)
+    session['otp'] = otp
+    session['email'] = email
+    if send_email(email, otp):
+        return jsonify({'message': 'OTP sent successfully', 'success': True})
+    else:
+        return jsonify({'message': 'Failed to send OTP'}), 500
+
+@app.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    user_otp = request.json.get('otp')
+    if 'otp' in session and session['otp'] == int(user_otp):
+        session['email_verified'] = True
+        return jsonify({'message': 'OTP verified successfully','success': True})
+    else:
+        session['email_verified'] = False
+        return jsonify({'message': 'Invalid OTP'}), 400
+
+def ensure_directory_exists(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     jee = "JEE"
     if request.method == 'POST':
-        query = request.form['query']
-        first_name = request.form['first_name'].upper()  # Convert first name to uppercase
-        middle_name = request.form['middle_name'].upper()  # Convert middle name to uppercase
-        last_name = request.form['last_name'].upper()  # Convert last name to uppercase
-        mobile = request.form['mobile']
-        email = request.form['email']
-        department = request.form['department']  # Capture department from form data
+        query = request.form.get('query', '').strip()
+        first_name = request.form.get('first_name', '').upper().strip()
+        middle_name = request.form.get('middle_name', '').upper().strip()
+        last_name = request.form.get('last_name', '').upper().strip()
+        mobile = request.form.get('mobile', '').strip()
+        mobile1 = request.form.get('mobile1', '').strip()
+        address = request.form.get('address', '').strip()
+        email = request.form.get('email', '').strip()
+        department = request.form.get('departments', '').strip()
+        
+        file = request.files.get('file')
 
-        # Combine names into check_values for searching
+        # Debugging: Print received form data
+        print(f"Received data: query={query}, first_name={first_name}, middle_name={middle_name}, last_name={last_name}, mobile={mobile}, email={email}, department={department}, address={address}")
+
+        if not email or not mobile:
+            flash('Please fill in all required fields (email, mobile number).')
+            return render_template('search.html')
+
+        # Store email in session after verification
+        session['email'] = email
+        session['email_verified'] = True
+        session['query'] = query
+
+        if not file or file.filename == '':
+            flash('No selected file', 'error')
+            return redirect(request.url)
+
+        if not session.get('email_verified'):
+            flash('Please verify your email before submitting the form.')
+            return redirect(url_for('index'))
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            base_filename = filename.rsplit('.', 1)[0]
+            print(f"Uploaded file: {filename}, Base filename: {base_filename}, Query: {query}")  # Debugging
+
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+        else:
+            flash('Invalid file type.', 'error')
+            return redirect(request.url)
+
+# Extract the PDF file name (without path)
+        pdf_file_name = filename
+
         full_name = f"{first_name} {middle_name} {last_name}".strip()
         first_middle_name = f"{first_name} {middle_name}".strip()
         check_value = f"{first_name} {middle_name} {last_name}"
 
-        # Search based on different scenarios
-        results1 = search_data(full_name, 'output1.csv') if last_name else search_data(first_middle_name, 'output1.csv') if middle_name else search_data(first_name, 'output1.csv')
-        results2 = search_data(full_name, 'output2.csv') if last_name else search_data(first_middle_name, 'output2.csv') if middle_name else search_data(first_name, 'output2.csv')
+        results1 = search_data(query, 'output1.csv') 
+        results2 = search_data(query, 'output2.csv') 
 
-        # Flag to track if check value was found in any results
         check_found = bool(results1 or results2)
 
-        # Basic email and mobile number validation (add more thorough validation if needed)
-        if not email or not email.strip() or not mobile or not mobile.strip():
-            flash('Please fill in all required fields (email, mobile number).')
-            return render_template('search.html')  # Or redirect to appropriate page
-        
-        # Check if contact.csv exists
         contact_csv_path = os.path.join(app.config['UPLOAD_FOLDER'], 'contact.csv')
         if os.path.exists(contact_csv_path):
-            # Check if the query exists in contact.csv for the same department
             with open(contact_csv_path, 'r', newline='') as contact_file:
                 reader = csv.reader(contact_file)
                 for row in reader:
                     if query == row[0]:
                         flash('Already applied')
-                        return render_template('search.html',message_level=message_level)
+                        return render_template('search.html')
 
-        # Save searched data (if check value is found and result is from output1.csv with "JEE")
         jee_csv_path = os.path.join(app.config['UPLOAD_FOLDER'], 'jee.csv')
         with open(jee_csv_path, 'a', newline='') as jee_file:
             writer = csv.writer(jee_file)
-            # Write headers only if the file is empty
             if not results1 and not os.path.getsize(jee_csv_path):
                 writer.writerow(results1[0].keys()) if results1 else None
-            # Append data for each result (if check value is found and result is from output1.csv with "JEE")
             for row in results1:
-                if any(jee == value for value in row.values()):  
+                if any(jee == value for value in row.values()):
                     if any(check_value == value for value in row.values()):
                         writer.writerow(row.values())
                         check_found = True
-                        break  # Exit loop after finding check value
+                        break
 
-
-        # Similar logic for cet.csv
         cet_csv_path = os.path.join(app.config['UPLOAD_FOLDER'], 'cet.csv')
         with open(cet_csv_path, 'a', newline='') as cet_file:
             writer = csv.writer(cet_file)
-            # Write headers only if the file is empty
             if not results2 and not os.path.getsize(cet_csv_path):
                 writer.writerow(results2[0].keys()) if results2 else None
-            # Append data for each result (if check value is found)
             for row in results2:
                 if any(check_value == value for value in row.values()):
                     writer.writerow(row.values())
                     check_found = True
                     break
 
-        # Save contact information only if check value was found
+        if not check_found:
+            return render_template('search.html', data_not_found=True)
+
         if check_found:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             contact_csv_path = os.path.join(app.config['UPLOAD_FOLDER'], 'contact.csv')
-            # Check if contact.csv exists, create it if not
+            comment = request.form.get('comment', '').strip()
             if not os.path.exists(contact_csv_path):
                 with open(contact_csv_path, 'w', newline='') as contact_file:
                     writer = csv.writer(contact_file)
-                    writer.writerow(['Application ID', 'Name','Department', 'Email', 'Mobile Number'])
+                    writer.writerow(['Application ID', 'Name', 'Department', 'Email', 'Mobile Number', 'Alternate Number', 'Address', 'PDF File Name', 'Timestamp'])
 
-            # Write to contact.csv only if check_found is True
             with open(contact_csv_path, 'a', newline='') as contact_file:
                 writer = csv.writer(contact_file)
-                writer.writerow([query, check_value,  department, email, mobile])  # Include department
+                writer.writerow([query, check_value, department, email, mobile, mobile1, address, pdf_file_name, timestamp])
 
-                # Process records from output2.csv (cet.csv) and create separate CSV files
-                if check_found:  # Only process if check value was found
+                if check_found:
                     for row in results2:
-                        # Extract the value for filename
-                        value_filename = row.get('Unnamed: 3', '')
+                        value_filename = row.get('Category', '').replace('/', '_')
                         value_csv_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{value_filename}.csv")
+
+                        # Ensure the directory exists
+                        ensure_directory_exists(value_csv_path)
 
                         with open(value_csv_path, 'a', newline='') as value_file:
                             writer = csv.writer(value_file)
-                            # Write headers only if the file is empty
                             if not os.path.getsize(value_csv_path):
                                 writer.writerow(row.keys())
                             writer.writerow(row.values())
 
-                        # Apply sorting on the created value.csv file
                         sort_csv_file(value_csv_path)
-
-            # Apply sorting on jee.csv and cet.csv based on the first column
             if results1:
                 sort_csv_file(jee_csv_path)
             if results2:
                 sort_csv_file(cet_csv_path)
 
-            # Check if the check value was found in any results
             cross_checked = check_found
-
-            # Return the template with search results and cross_checked flag
+            
             return render_template('result.html', results_dict={'jee': results1, 'cet': results2}, cross_checked=cross_checked)
-    return render_template('search.html')
+    return render_template('search.html', data_not_found=False)
 
 # Function to search for data in the CSV file based on a specific attribute
 def search_data(query, file_name):
@@ -286,27 +409,30 @@ def search_data(query, file_name):
                     break  # Break out of the inner loop if a match is found
     return results
 
+
 def sort_csv_file(file_path):
     with open(file_path, 'r', newline='') as file:
         all_data = list(csv.reader(file))
 
-        # Handle non-numeric values (choose a suitable approach)
-        for i, row in enumerate(all_data):  # Use enumerate for row index
-            try:
-                row[0] = float(row[0])
-            except ValueError:
-                # Option 1: Skip the row (current behavior)
-                all_data.pop(i)  # Remove the row with non-numeric value
+    # Filter out rows with non-numeric values in the first column
+    def parse_row(row):
+        try:
+            # Try converting the first column to a float
+            row[0] = float(row[0])
+        except (ValueError, IndexError):
+            # Handle rows where the first column is non-numeric or missing
+            row[0] = float('inf')  # Use a placeholder for sorting (e.g., float('inf'))
+        return row
 
-                # Option 2: Assign a specific value (e.g., 0 or a placeholder)
-                # row[0] = 0
+    parsed_data = [parse_row(row) for row in all_data]
 
-        # Sort based on the first column (index 0) in ascending order
-        all_data.sort(key=lambda row: float(row[0]) if row else 0)
+    # Sort the rows based on the first column
+    sorted_data = sorted(parsed_data, key=lambda row: row[0])
 
-        with open(file_path, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(all_data)
+    with open(file_path, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(sorted_data)
+
 
 @app.route('/view_csv/<filename>')
 def showCSVContent(filename):
@@ -326,7 +452,6 @@ def showCSVContent(filename):
         return redirect(url_for('index'))
 
     return csv_content
-
 
 # Function to add serial number to CSV data
 def add_serial_number(csv_content, filename):
@@ -364,7 +489,6 @@ def add_serial_number(csv_content, filename):
             'Merit No',
             'Application ID',
             "Candidate's Full Name",
-            'Merit Exam',
             'Category',
             'Gender',
             'PWD / Def',
@@ -372,6 +496,7 @@ def add_serial_number(csv_content, filename):
             'TFWS',
             'Orphan',
             'Minority Type (LM/RM)',
+            'Merit Exam',
             'Percentile/Mark',
             'MHT-CET Math Percentile',
             'MHT-CET Physics Percentile',
@@ -385,22 +510,12 @@ def add_serial_number(csv_content, filename):
             'SSC Science %',
             'SSC English %'
         ]
-
     lines = csv_content.split('\n')
     modified_content = ','.join(column_names) + '\n'  # Add column names
-    
-    # Add serial numbers starting from 1 for the first row and 2 for subsequent rows
-    for i, line in enumerate(lines):
+    for i, line in enumerate(lines[1:], start=1):
         if line.strip():  # Skip empty lines
-            if i == 0:
-                modified_content += f'1,{line}\n'  # Add serial number 1 for the first row
-            else:
-                modified_content += f'{i+1},{line}\n'  # Add serial number starting from 2 for subsequent rows
-
+            modified_content += f'{i},{line}\n'  # Add serial number
     return modified_content
-
-
-
 
 @app.route('/view_csv/<filename>')
 def view_csv(filename):
@@ -421,7 +536,6 @@ def view_csv(filename):
 
     return modified_csv_content
 
-
 @app.route('/download_csv/<filename>')
 def download_csv(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -440,14 +554,41 @@ def download_csv(filename):
         )
     else:
         return f"File '{filename}' not found.", 404
-
-    
     
 @app.route('/submit', methods=['POST'])
 def submit():
+    # Get user email from session
+    user_email = session.get('email')
+    user_id = session.get('query')
+
+    if not user_email:
+        flash('Email not found.')
+        return redirect(url_for('index'))
+
+    # Get the form data
+    name = request.form.get('name')
+    application_id = request.form.get('application_id')
+    comment = request.form.get('comment')  # Assuming you have a comment field in your form
+
+    # Define the path to the CSV file where submissions will be stored
+    submissions_file = os.path.join(app.config['UPLOAD_FOLDER'], 'discrepancies.csv')
+
+    # Append the submission data to the CSV file
+    with open(submissions_file, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        # Write the header only if the file is empty
+        if csvfile.tell() == 0:
+            writer.writerow(['Application ID', 'Name', 'Email', 'Comment'])  # CSV header
+        writer.writerow([application_id, name, user_email, comment])  # CSV data
+
+    # Create a confirmation message
+    msg = Message("Confirmation of Submission", recipients=[user_email])
+    msg.body = f"Dear {user_id},\n\nWe are pleased to inform you that your details have been successfully verified and submitted.\nYou are now registered for Spot Round 2024-25. \nThank you for your participation.\n\nIf you have any queries, please contact the college. \n\n\nBest regards,\nModern Education Society's Wadia College of Engineering.\n\nTelephone : (020)-26163831\nAdmission Enquiry : +91 7798883400\nEmail : info@mescoepune.org"
+    mail.send(msg)
+
     # Render the submitted.html template
     return render_template('submitted.html')
 
 
-#if __name__ == '__main__':
- #   app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
